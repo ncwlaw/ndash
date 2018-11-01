@@ -1,0 +1,11 @@
+{
+  "ndash.containers.App.Drawer.configure.project": "Configure Project",
+  "ndash.containers.App.Drawer.dashboard": "Dashboard",
+  "ndash.containers.App.Drawer.delivery.metrics": "Delivery Metrics",
+  "ndash.containers.App.Drawer.header": "NVDash",
+  "ndash.containers.App.Drawer.monitoring": "Monitoring",
+  "ndash.containers.App.Drawer.pipelines": "Pipelines",
+  "ndash.containers.App.Drawer.version": "v0.1.0",
+  "ndash.containers.HomePage.header": "CICD Workflow Status",
+  "ndash.containers.NotFoundPage.header": "This is the NotFoundPage container!"
+}
