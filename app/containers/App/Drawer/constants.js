@@ -1,5 +1,4 @@
 const CATEGORIES = [
-  "dashboard",
   "pipelines",
   "monitoring",
   "deliveryMetrics",

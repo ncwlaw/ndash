@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import Divider from '@material-ui/core/Divider';
 
-import Menu from './Menu'
+import DrawerContent from './DrawerContent'
 
 const drawerWidth = 240;
 
@@ -49,7 +48,7 @@ class ResponsiveDrawer extends React.Component {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            <Menu/>
+            <DrawerContent/>
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="js">
@@ -60,7 +59,7 @@ class ResponsiveDrawer extends React.Component {
             variant="permanent"
             open
           >
-            <Menu/>
+            <DrawerContent/>
           </Drawer>
         </Hidden>
       </nav>
