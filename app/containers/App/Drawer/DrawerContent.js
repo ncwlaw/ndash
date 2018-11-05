@@ -19,7 +19,7 @@ const styles = theme => ({
   },
 });
 
-const Menu = ({ classes, intl }) => {
+const Menu = ({ classes, intl, projects }) => {
   return (
     <React.Fragment>
       <Grid
@@ -44,7 +44,7 @@ const Menu = ({ classes, intl }) => {
         </Grid>
       </Grid>
       <Divider />
-      <List />
+      <List source={projects}/>
     </React.Fragment>
   );
 };

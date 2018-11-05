@@ -30,7 +30,7 @@ class ResponsiveDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, projects } = this.props;
     return (
       <nav className={classes.drawer}>
         {/* The implementation can be swap with js to avoid SEO duplication of links. */}
@@ -48,7 +48,7 @@ class ResponsiveDrawer extends React.Component {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            <DrawerContent/>
+            <DrawerContent projects={projects}/>
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="js">
@@ -59,7 +59,7 @@ class ResponsiveDrawer extends React.Component {
             variant="permanent"
             open
           >
-            <DrawerContent/>
+            <DrawerContent projects={projects}/>
           </Drawer>
         </Hidden>
       </nav>

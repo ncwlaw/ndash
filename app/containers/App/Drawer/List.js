@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import cn from 'classnames'
-import { withStateHandlers, compose } from 'recompose';
+import { withStateHandlers, compose, withProps } from 'recompose';
 import { injectIntl, FormattedMessage } from 'react-intl';
 
 import { CATEGORIES } from './constants';
 import messages from './messages';
+import withCollapse from 'components/utils/collapse';
 
 import Link from  'react-router-dom/Link';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -22,6 +23,13 @@ import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import ListItemLinkComponent from './ListItemLink';
+
+const ListItemLink = withProps(({ selected, label, ...rest }) => ({
+  ...rest,
+  label,
+  selected: label === selected,
+}))(ListItemLinkComponent);
 
 const styles = theme => ({
   listItemRoot: {
@@ -35,12 +43,15 @@ const styles = theme => ({
   },
 });
 
-const Menu = (props) => {
+const ListComponent = (props) => {
   const {
     isCollapse,
     toggleCollapse,
+    onSelect,
     classes,
-    intl
+    intl,
+    source,
+    selected,
   } = props;
   return (
     <List
@@ -60,76 +71,64 @@ const Menu = (props) => {
       </ListItem>
       <Collapse in={isCollapse} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <Link className={classes.link} to='/'>
-            <ListItem button selected className={classes.nested}>
-              <ListItemIcon>
-                <AssignmentIcon />
-              </ListItemIcon>
-              <ListItemText inset primary="COSMOS" />
-            </ListItem>
-          </Link>
+          {source.map(project => (
+            <ListItemLink
+              nested
+              className={classes.nested}
+              onClick={onSelect}
+              key={project}
+              to={`/projects/${project}`}
+              selected={selected}
+              icon={<AssignmentIcon />}
+              label={project}
+            />
+          ))}
         </List>
       </Collapse>
-      <Link className={classes.link} to='monitoring'>
-        <ListItem button>
-          <ListItemIcon>
-            <BarChartIcon />
-          </ListItemIcon>
-          <ListItemText inset primary={intl.formatMessage(messages.monitoring)} />
-        </ListItem>
-      </Link>
-      <Link className={classes.link} to='metrics'>
-        <ListItem button>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText inset primary={intl.formatMessage(messages.deliveryMetrics)} />
-        </ListItem>
-      </Link>
-      <Link className={classes.link} to='configure'>
-        <ListItem button>
-          <ListItemIcon>
-            <LayersIcon />
-          </ListItemIcon>
-          <ListItemText inset primary={intl.formatMessage(messages.configureProject)} />
-        </ListItem>
-      </Link>
+      <ListItemLink
+        to="/monitoring"
+        selected={selected}
+        icon={<BarChartIcon />}
+        label={intl.formatMessage(messages.monitoring)}
+        onClick={onSelect}
+      />
+      <ListItemLink
+        to="/metrics"
+        selected={selected}
+        icon={<DashboardIcon />}
+        label={intl.formatMessage(messages.deliveryMetrics)}
+        onClick={onSelect}
+      />
+      <ListItemLink
+        to="/configure"
+        selected={selected}
+        icon={<LayersIcon />}
+        label={intl.formatMessage(messages.configureProject)}
+        onClick={onSelect}
+      />
     </List>
   );
 };
 
-Menu.propTypes = {
+ListComponent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
 const enhance = compose(
   injectIntl,
+  withProps({ initialCollapse: true }),
+  withCollapse,
   withStateHandlers(
-    ({ initialCollapse = true }) => ({
-      isCollapse: initialCollapse
+    ({ source }) => ({
+      selected: source[0],
     }),
     {
-      toggleCollapse: ({ isCollapse }) => () => ({
-        isCollapse: !isCollapse
+      onSelect: () => (value) => ({
+        selected: value,
       }),
-    },
+    }
   ),
   withStyles(styles, { withTheme: true })
 );
 
-/*
-<List>
-  {CATEGORIES.map((text, index) => (
-    <ListItem
-      key={text}
-      button
-      classes={{
-        root: classes.listItemRoot
-      }}
-    >
-      <ListItemText text={intl.formatMessage(messages[text])} />
-    </ListItem>
-  ))}
-</List>
-*/
-export default enhance(Menu);
+export default enhance(ListComponent);

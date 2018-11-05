@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { compose, withProps } from 'recompose';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,164 +19,44 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
+  cursor: {
+    cursor: 'pointer',
+  },
 });
 
-const createData = ({
-  id,
-  system,
-  subsystem,
-  comp,
-  dev,
-  qa,
-  stage,
-  performance,
-  canary,
-  production
-}) => ({
-  id,
-  system,
-  subsystem,
-  comp,
-  dev,
-  qa,
-  stage,
-  performance,
-  canary,
-  production
-});
-
-const rows = [
-  {
-    id: 0,
-    system: "NGC",
-    subsystem: "COSMOS",
-    comp: "Kafka",
-    dev: "1.0.10",
-    qa: "1.0.8",
-    stage: "1.0.5",
-    performance: "1.0.3",
-    canary: undefined,
-    production: undefined,
-  },
-  {
-    id: 1,
-    system: "NGC",
-    subsystem: "COSMOS",
-    comp: "Parsec",
-    dev: "1.0.10",
-    qa: "1.0.8",
-    stage: "1.0.5",
-    performance: "1.0.3",
-    canary: undefined,
-    production: undefined,
-  },
-  {
-    id: 2,
-    system: "NGC",
-    subsystem: "COSMOS",
-    comp: "Ingress",
-    dev: "1.0.10",
-    qa: "1.0.8",
-    stage: "1.0.5",
-    performance: "1.0.3",
-    canary: undefined,
-    production: undefined,
-  },
-  {
-    id: 3,
-    system: "NGC",
-    subsystem: "COSMOS",
-    comp: "DSS",
-    dev: "1.0.10",
-    qa: "1.0.8",
-    stage: "1.0.5",
-    performance: "1.0.3",
-    canary: undefined,
-    production: undefined,
-  },
-  {
-    id: 4,
-    system: "NGC",
-    subsystem: "COSMOS",
-    comp: "Test Framework",
-    dev: "1.0.10",
-    qa: "1.0.8",
-    stage: "1.0.5",
-    performance: "1.0.3",
-    canary: undefined,
-    production: undefined,
-  },
-  {
-    id: 5,
-    system: "Maglev",
-    subsystem: "Platforms",
-    comp: undefined,
-    dev: undefined,
-    qa: undefined,
-    stage: undefined,
-    performance: undefined,
-    canary: undefined,
-    production: undefined,
-  },
-  {
-    id: 6,
-    system: "CI Infrastructure",
-    subsystem: "Jenkins Sandbox",
-    comp: undefined,
-    dev: undefined,
-    qa: undefined,
-    stage: undefined,
-    performance: undefined,
-    canary: undefined,
-    production: undefined,
-  },
-  {
-    id: 7,
-    system: "CI Infrastrucutre",
-    subsystem: "Jenkins Production",
-    comp: undefined,
-    dev: undefined,
-    qa: undefined,
-    stage: undefined,
-    performance: undefined,
-    canary: undefined,
-    production: undefined,
-  },
-];
-
-const generate = R.map(createData);
+const rowString = R.compose(
+  R.join('_'),
+  R.values
+);
 
 function SimpleTable(props) {
-  const { classes } = props;
+  const {
+    classes,
+    source,
+    headers,
+    onClick,
+  } = props;
 
   return (
     <Table className={classes.table}>
       <TableHead>
         <TableRow>
-          <TableCell>System</TableCell>
-          <TableCell>Sub-System</TableCell>
-          <TableCell>Component</TableCell>
-          <TableCell>Development</TableCell>
-          <TableCell>Quality Assurance</TableCell>
-          <TableCell>Staging</TableCell>
-          <TableCell>Performance</TableCell>
-          <TableCell>Canary</TableCell>
-          <TableCell>Production</TableCell>
+          {headers.map((header, index) => <TableCell key={index}>{header}</TableCell>)}
         </TableRow>
       </TableHead>
       <TableBody>
-        {generate(rows).map(row => {
+        {source.map((row, rowIndex) => {
           return (
-            <TableRow key={row.id}>
-              <TableCell>{row.system}</TableCell>
-              <TableCell>{row.subsystem}</TableCell>
-              <TableCell>{row.comp}</TableCell>
-              <TableCell>{row.dev}</TableCell>
-              <TableCell>{row.qa}</TableCell>
-              <TableCell>{row.stage}</TableCell>
-              <TableCell>{row.performance}</TableCell>
-              <TableCell>{row.canary}</TableCell>
-              <TableCell>{row.production}</TableCell>
+            <TableRow hover key={rowString(row)}>
+              {headers.map((header, colIndex) => (
+                <TableCell
+                  key={`${rowIndex}_${colIndex}`}
+                  onClick={onClick}
+                  className={classes.cursor}
+                >
+                  {row[header]}
+                </TableCell>
+              ))}
             </TableRow>
           );
         })}
@@ -186,6 +67,25 @@ function SimpleTable(props) {
 
 SimpleTable.propTypes = {
   classes: PropTypes.object.isRequired,
+  source: PropTypes.array.isRequired,
 };
 
-export default withStyles(styles)(SimpleTable);
+SimpleTable.defaultProps = {
+  source: [],
+};
+
+const enhance = compose(
+  withProps(({ source }) => ({
+    headers: R.ifElse(
+      R.either(R.isNil, R.isEmpty),
+      R.always([]),
+      R.compose(
+        R.keys,
+        R.head
+      )
+    )(source)
+  })),
+  withStyles(styles),
+);
+
+export default enhance(SimpleTable);

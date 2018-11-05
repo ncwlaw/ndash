@@ -41,7 +41,7 @@ function StyledAppBar(props) {
           <MenuIcon />
         </IconButton>
         <div className={classes.grow}>
-          <img src={logo} height="100%" width="100" />
+          <img src={logo} height="100%" width="150" />
         </div>
         {/*<Button color="inherit">Login</Button>*/}
       </Toolbar>
