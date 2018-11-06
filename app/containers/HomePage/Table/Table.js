@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { compose, withProps } from 'recompose';
+import { branch, renderComponent, compose, withProps } from 'recompose';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import * as R from 'ramda';
+import TableCellData from './TableCell';
 
 const styles = theme => ({
   root: {
@@ -19,8 +20,8 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
-  cursor: {
-    cursor: 'pointer',
+  tableHeader: {
+    marginLeft: 40,
   },
 });
 
@@ -37,25 +38,38 @@ function SimpleTable(props) {
     onClick,
   } = props;
 
+  const [component, ...environments] = headers;
+
   return (
     <Table className={classes.table}>
       <TableHead>
         <TableRow>
-          {headers.map((header, index) => <TableCell key={index}>{header}</TableCell>)}
+          {headers.map((header, index) => (
+            <TableCell key={index}>
+              <div className={classes.tableHeader}>
+                {header}
+              </div>
+            </TableCell>
+          ))}
         </TableRow>
       </TableHead>
       <TableBody>
         {source.map((row, rowIndex) => {
           return (
             <TableRow hover key={rowString(row)}>
-              {headers.map((header, colIndex) => (
-                <TableCell
+              <TableCell>
+                <div className={classes.tableHeader}>
+                  {row[component]}
+                </div>
+              </TableCell>
+              {environments.map((environment, colIndex) => (
+                <TableCellData
                   key={`${rowIndex}_${colIndex}`}
                   onClick={onClick}
-                  className={classes.cursor}
+                  status={colIndex % 2 === 0 ? 'success' : 'fail'}
                 >
-                  {row[header]}
-                </TableCell>
+                  {row[environment]}
+                </TableCellData>
               ))}
             </TableRow>
           );

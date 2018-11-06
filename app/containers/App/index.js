@@ -29,6 +29,7 @@ export default function App() {
       <Drawer projects={['NGCC']}/>
       <Main>
         <Switch>
+          <Route exact path="/" component={HomePage} />
           <Route exact path="/projects/:name" component={HomePage} />
           <Route exact path="/monitoring" component={NotFoundPage} />
           <Route exact path="/metrics" component={NotFoundPage} />
