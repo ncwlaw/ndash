@@ -12,70 +12,87 @@ import lightGreen from '@material-ui/core/colors/lightGreen';
 
 const styles = theme => ({
   cursor: {
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   cellContent: {
     paddingRight: 20,
   },
   pendingContent: {
-    width: 40,
+    paddingLeft: 20,
   },
   cellContentIcon: {
     fontSize: 20,
   },
   cancelIcon: {
-    color: red['500'],
+    color: red["500"],
   },
   successIcon: {
-    color: lightGreen['500'],
+    color: lightGreen["500"],
+  },
+  textOverflow: {
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
   },
 });
 
-const FailContent = withStyles(styles)(({ classes, children }) => (
-  <Grid container alignItems="center">
+const Content = ({ icon, classes, children }) => (
+  <Grid
+    container
+    wrap="nowrap"
+    alignItems="center"
+  >
     <Grid
       item
       className={classes.cellContent}
     >
-      <CancelIcon
-        className={cn(
-          classes.cellContentIcon,
-          classes.cancelIcon,
-        )}
-      />
+      {icon}
     </Grid>
     <Grid item >
       {children}
     </Grid>
   </Grid>
+);
+
+const FailContent = withStyles(styles)(({ classes, children }) => (
+  <Content
+    classes={{ cellContent: classes.cellContent }}
+    icon={
+      <CancelIcon className={cn(
+          classes.cellContentIcon,
+          classes.cancelIcon
+        )}
+      />
+    }
+  >
+    {children}
+  </Content>
 ));
 
 const SuccessContent = withStyles(styles)(({ classes, children }) => (
-  <Grid container alignItems="center">
-    <Grid
-      item
-      className={classes.cellContent}
-    >
+  <Content
+    classes={{ cellContent: classes.cellContent }}
+    icon={
       <CheckCircleIcon
         className={cn(
           classes.cellContentIcon,
           classes.successIcon,
         )}
       />
-    </Grid>
-    <Grid item >
-      {children}
-    </Grid>
-  </Grid>
+    }
+  >
+    {children}
+  </Content>
 ));
 
 const PendingContent = withStyles(styles)(({ classes, children }) => (
-  <Grid container alignItems="center">
-    <div className={classes.pendingContent} />
-    <Grid item >
+  <Content
+    classes={{ cellContent: classes.cellContent }}
+  >
+    <div className={classes.pendingContent} >
       {children}
-    </Grid>
-  </Grid>
+    </div>
+  </Content>
 ));
 
 const CellContent = compose(
@@ -100,7 +117,10 @@ function TableCellContent(props) {
   return (
     <TableCell
       onClick={onClick}
-      className={classes.cursor}
+      className={cn(
+        classes.cursor,
+        classes.textOverflow
+      )}
     >
       <CellContent status={status}>
         {children}

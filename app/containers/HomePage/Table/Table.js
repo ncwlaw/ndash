@@ -66,7 +66,7 @@ function SimpleTable(props) {
                 <TableCellData
                   key={`${rowIndex}_${colIndex}`}
                   onClick={onClick}
-                  status={colIndex % 2 === 0 ? 'success' : 'fail'}
+                  status={colIndex % 2 === 0 ? 'success' : 'pending'}
                 >
                   {row[environment]}
                 </TableCellData>
