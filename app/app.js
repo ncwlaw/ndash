@@ -13,9 +13,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
-import history from 'utils/history';
+import { ApolloProvider } from 'react-apollo';
 import 'sanitize.css/sanitize.css';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import history from 'utils/history';
+import apolloClient from 'utils/apollo';
 
 // Import root app
 import App from 'containers/App';
@@ -48,7 +50,9 @@ const render = messages => {
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
           <MuiThemeProvider theme={theme}>
-            <App />
+            <ApolloProvider client={apolloClient}>
+              <App />
+            </ApolloProvider>
           </MuiThemeProvider>
         </ConnectedRouter>
       </LanguageProvider>
