@@ -4,8 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import cn from 'classnames';
 import { compose, withStateHandlers } from 'recompose';
 import dateFns from 'date-fns';
+import * as R from 'ramda';
 
 import withCollapse from 'components/utils/collapse';
+import { CONTENT } from '../constants';
 
 /**
  * Components
@@ -20,11 +22,11 @@ import Grow from '@material-ui/core/Grow';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
 import { StackedBarChart } from '../Chart';
 import { List as ComponentDetails } from '../List';
 import Table from '../Table';
+import StatusChip from '../Chip';
 
 /**
  * Icons
@@ -33,7 +35,6 @@ import Table from '../Table';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import BarChartIcon from '@material-ui/icons/BarChart';
-import CheckIcon from '@material-ui/icons/Check';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
@@ -66,16 +67,6 @@ const styles = theme => ({
   },
   extendedIcon: {
     marginRight: theme.spacing.unit,
-  },
-  chip: {
-    margin: theme.spacing.unit,
-    padding: "0 15px",
-    fontSize: 14,
-    fontWeight: 500
-  },
-  chipAvatarIcon: {
-    backgroundColor: '#fff',
-    color: theme.palette.primary.main,
   },
   chipContainer: {
     padding: 20,
@@ -116,13 +107,13 @@ const TableCardContent = ({
       subheader={dateFns.format(new Date(), 'MMMM D, YYYY ')}
     />
     <Table
-      onClick={() => onChange("build")}
+      onClick={(build) => onChange(CONTENT.BUILD, build)}
       source={source}
     />
     <CardActions className={classes.actions} disableActionSpacing>
       <Button
         variant="fab"
-        onClick={() => onChange("metrics")}
+        onClick={() => onChange(CONTENT.METRICS)}
         color="primary"
         mini
         className={classes.button}
@@ -139,7 +130,7 @@ const BarChartCardContent = ({ classes }) => (
   </div>
 );
 
-const BuildDetailCardContent = ({ classes }) => (
+const BuildDetailCardContent = ({ build, classes }) => (
   <Grid
     className={classes.cardContent}
     container
@@ -154,29 +145,19 @@ const BuildDetailCardContent = ({ classes }) => (
       container
       justify="space-around"
     >
-      <Chip
-        icon={<CheckIcon />}
-        label="Successful"
-        className={classes.chip}
-        classes={{
-          root: classes.chip,
-          avatarColorPrimary: classes.chipAvatarIcon,
-        }}
-        color="primary"
-        variant="outlined"
-      />
+      <StatusChip status={build.status} />
     </Grid>
   </Grid>
 );
 
 const GrowCardContent = ({
-  isVisibile,
+  isVisible,
   children,
   title,
   onClick,
   classes,
 }) => (
-  <Grow in={isVisibile} timout="auto" unmountOnExit>
+  <Grow in={isVisible} timout="auto" unmountOnExit>
     <div className={classes.growContainer}>
       <CardHeader
         title={<Typography variant='h5'>{title}</Typography>}
@@ -204,6 +185,8 @@ class TableCard extends React.Component {
       content,
       onChange,
       onReset,
+      build,
+      theme,
     } = this.props;
 
     return (
@@ -211,7 +194,7 @@ class TableCard extends React.Component {
         className={cn(
           classes.root,
           {
-            [classes.growContent]: content !== "table"
+            [classes.growContent]: content !== CONTENT.TABLE
           }
         )}
       >
@@ -222,7 +205,7 @@ class TableCard extends React.Component {
           onChange={onChange}
         />
         <GrowCardContent
-          isVisibile={content === "metrics"}
+          isVisible={content === CONTENT.METRICS}
           classes={classes}
           title="Metrics"
           onClick={onReset}
@@ -230,12 +213,12 @@ class TableCard extends React.Component {
           <BarChartCardContent classes={classes} />
         </GrowCardContent>
         <GrowCardContent
-          isVisibile={content === "build"}
+          isVisible={content === CONTENT.BUILD}
           classes={classes}
-          title="Build Details"
+          title={build ? `${build.env} ${build.version} Build` : ""}
           onClick={onReset}
         >
-          <BuildDetailCardContent classes={classes} />
+          <BuildDetailCardContent build={build} classes={classes} />
         </GrowCardContent>
       </Card>
     );
@@ -245,24 +228,23 @@ class TableCard extends React.Component {
 TableCard.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  content: PropTypes.oneOf([
-    "metrics",
-    "build",
-    "table",
-  ]),
+  content: PropTypes.oneOf(Object.values(CONTENT)),
 };
 
 const enhance = compose(
   withStateHandlers(
-    ({ initialContent = "table" }) => ({
+    ({ initialContent = CONTENT.TABLE, initialBuild = {} }) => ({
       content: initialContent,
+      build: initialBuild,
     }),
     {
-      onChange: () => (value) => ({
+      onChange: () => (value, build) => ({
         content: value,
+        build,
       }),
       onReset: () => () => ({
-        content: "table",
+        content: CONTENT.TABLE,
+        build: {},
       })
     }
   ),

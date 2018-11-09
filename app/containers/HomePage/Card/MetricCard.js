@@ -6,15 +6,23 @@ import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import common from '@material-ui/core/colors/common';
+import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/Info';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    margin: "20px 0",
     height: "250px",
+    margin: "20px 0",
+    color: "#fff",
+    position: 'relative',
+  },
+  cardContent: {
+    height: "100%",
+  },
+  infoIcon: {
+    color: "#fff",
   },
   typography: {
     color: common['white'],
@@ -27,18 +35,26 @@ class TableCard extends React.Component {
 
     return (
       <Card
-        className={cn(classes.root)}
-        style={{
-          color: "#fff",
-          backgroundColor: color,
-        }}
+        style={{ backgroundColor: color, color: "#fff" }}
+        className={classes.root}
       >
-        <Typography className={classes.typography} variant="h3">
-          { value }
-        </Typography>
-        <Typography className={classes.typography} variant="subtitle2">
-          { title }
-        </Typography>
+        <IconButton style={{ right: 0, position: 'absolute' }}>
+          <MoreVertIcon className={classes.infoIcon} />
+        </IconButton>
+        <Grid
+          justify="center"
+          direction="column"
+          alignItems="center"
+          container
+          className={classes.cardContent}
+        >
+          <Typography className={classes.typography} variant="h3">
+            { value }
+          </Typography>
+          <Typography className={classes.typography} variant="subtitle2">
+            { title }
+          </Typography>
+        </Grid>
       </Card>
     );
   }

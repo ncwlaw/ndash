@@ -38,7 +38,7 @@ function SimpleTable(props) {
     onClick,
   } = props;
 
-  const [component, ...environments] = headers;
+  const [start, ...environments] = headers;
 
   return (
     <Table className={classes.table}>
@@ -54,26 +54,24 @@ function SimpleTable(props) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {source.map((row, rowIndex) => {
-          return (
-            <TableRow hover key={rowString(row)}>
-              <TableCell>
-                <div className={classes.tableHeader}>
-                  {row[component]}
-                </div>
-              </TableCell>
-              {environments.map((environment, colIndex) => (
-                <TableCellData
-                  key={`${rowIndex}_${colIndex}`}
-                  onClick={onClick}
-                  status={colIndex % 2 === 0 ? 'success' : 'pending'}
-                >
-                  {row[environment]}
-                </TableCellData>
-              ))}
-            </TableRow>
-          );
-        })}
+        {Object.entries(source).map(([component, row], rowIndex) => (
+          <TableRow hover key={rowString(row)}>
+            <TableCell>
+              <div className={classes.tableHeader}>
+                {component}
+              </div>
+            </TableCell>
+            {environments.map((environment, colIndex) => (
+              <TableCellData
+                key={`${rowIndex}_${colIndex}`}
+                onClick={() => onClick(row[environment])}
+                status={row[environment].status}
+              >
+                {row[environment].version}
+              </TableCellData>
+            ))}
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
@@ -81,22 +79,24 @@ function SimpleTable(props) {
 
 SimpleTable.propTypes = {
   classes: PropTypes.object.isRequired,
-  source: PropTypes.array.isRequired,
+  source: PropTypes.object.isRequired,
 };
 
 SimpleTable.defaultProps = {
-  source: [],
+  source: {},
 };
 
 const enhance = compose(
   withProps(({ source }) => ({
-    headers: R.ifElse(
-      R.either(R.isNil, R.isEmpty),
-      R.always([]),
-      R.compose(
+    headers: R.compose(
+      R.prepend('Component'),
+      R.uniq,
+      R.reduce(R.concat, []),
+      R.map(R.compose(
         R.keys,
-        R.head
-      )
+        R.last,
+      )),
+      R.toPairs
     )(source)
   })),
   withStyles(styles),

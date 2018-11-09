@@ -23,6 +23,7 @@ import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import TimelineIcon from '@material-ui/icons/Timeline';
 import ListItemLinkComponent from './ListItemLink';
 
 const ListItemLink = withProps(({ selected, label, ...rest }) => ({
@@ -88,14 +89,14 @@ const ListComponent = (props) => {
       <ListItemLink
         to="/monitoring"
         selected={selected}
-        icon={<BarChartIcon />}
+        icon={<TimelineIcon />}
         label={intl.formatMessage(messages.monitoring)}
         onClick={onSelect}
       />
       <ListItemLink
         to="/metrics"
         selected={selected}
-        icon={<DashboardIcon />}
+        icon={<BarChartIcon />}
         label={intl.formatMessage(messages.deliveryMetrics)}
         onClick={onSelect}
       />

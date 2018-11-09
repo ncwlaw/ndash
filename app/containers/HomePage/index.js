@@ -21,6 +21,7 @@ import lightGreen from '@material-ui/core/colors/lightGreen';
 import Autocomplete from './Autocomplete';
 import { compose, nest, withProps, withStateHandlers } from 'recompose';
 import * as R from 'ramda';
+import { Query } from 'react-apollo';
 
 import {
   CardWrapper,
@@ -29,271 +30,9 @@ import {
 } from './Card';
 const TableCard = nest(CardWrapper, TCard);
 
+import { GET_SUBSYSTEMS, GET_BUILDS } from './constants';
+
 const enhance = compose(
-  withProps({
-    source: [
-      [
-        'COSMOS',
-        [
-          {
-            'id': 0,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Kafka",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 1,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Parsec",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 2,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Ingress",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 3,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "DSS",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 4,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Test Framework",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-        ],
-      ],
-      [
-        'Clara',
-        [
-          {
-            'id': 0,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Kafka",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 1,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Parsec",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 2,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Ingress",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 3,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "DSS",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 4,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Test Framework",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-        ],
-      ],
-      [
-        'CI Infrastructure',
-        [
-          {
-            'id': 0,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Kafka",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 1,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Parsec",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 2,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Ingress",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 3,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "DSS",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 4,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Test Framework",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-        ],
-      ],
-      [
-        'Maglev',
-        [
-          {
-            'id': 0,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Kafka",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 1,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Parsec",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 2,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Ingress",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 3,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "DSS",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-          {
-            'id': 4,
-            'System': "NGCC",
-            'Subsystem': "COSMOS",
-            'Component': "Test Framework",
-            'Pre-Merge': "1.0.10",
-            'Post-Merge': "1.0.8",
-            'Integration': "1.0.5",
-            'Quality': "1.0.3",
-            'Canary': undefined,
-            'Production': undefined,
-          },
-        ],
-      ],
-    ],
-  }),
   withStateHandlers(
     ({ initialFilter = [] }) => ({
       filters: initialFilter,
@@ -304,15 +43,12 @@ const enhance = compose(
       }),
     }
   ),
-  withProps(({ filters, source }) => ({
-    suggestions: R.map(([value]) => ({ value, label: value }))(source),
-    source: R.compose(
-      R.map(R.over(R.lensIndex(1), R.map(R.omit(['id', 'System', 'Subsystem'])))),
-      (source) => (R.isEmpty(filters)
-        ? source
-        : R.filter(([type]) => R.any(R.propEq('value', type))(filters))(source)
-      )
-    )(source),
+  withProps(({ filters, subsystems, builds }) => ({
+    suggestions: R.map(({ subsystem: value }) => ({ value, label: value }))(subsystems),
+    source: R.reduce((acc, value) => {
+      const { subsystem, component, env } = value;
+      return R.assocPath([subsystem, component, env], value, acc);
+    }, {})(builds)
   }))
 );
 
@@ -360,7 +96,7 @@ const HomePage = props => {
           />
         </Grid>
       </Grid>
-      {source.map(([title, data]) =>
+      {Object.entries(source).map(([title, data]) =>
         <TableCard
           source={data}
           key={title}
@@ -371,4 +107,26 @@ const HomePage = props => {
   );
 };
 
-export default enhance(HomePage);
+const EnhancedHomePage = enhance(HomePage);
+
+const DataProvider = () => (
+  <Query query={GET_SUBSYSTEMS}>
+    {({ loading: loadingOne, error: errorOne, data: { subsystems } }) => (
+      <Query query={GET_BUILDS}>
+        {({ loading: loadingTwo, error: errorTwo, data: { builds } }) => {
+          if (loadingOne || loadingTwo) return "loading...";
+          if (errorOne || errorTwo) return "Error!";
+
+          return (
+            <EnhancedHomePage
+              builds={builds}
+              subsystems={subsystems}
+            />
+          )
+        }}
+      </Query>
+    )}
+  </Query>
+)
+
+export default DataProvider;
