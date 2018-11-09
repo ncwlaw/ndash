@@ -121,6 +121,7 @@ module.exports = options => ({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         GRAPHQL_ENDPOINT: JSON.stringify(process.env.GRAPHQL_ENDPOINT),
+        VERSION: JSON.stringify(process.env.npm_package_version),
       },
     }),
   ]),
