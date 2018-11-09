@@ -154,6 +154,7 @@ const GrowCardContent = ({
   isVisible,
   children,
   title,
+  subheader,
   onClick,
   classes,
 }) => (
@@ -161,7 +162,7 @@ const GrowCardContent = ({
     <div className={classes.growContainer}>
       <CardHeader
         title={<Typography variant='h5'>{title}</Typography>}
-        disableTypography
+        subheader={subheader}
         avatar={
           <IconButton
             className={classes.arrowBack}
@@ -215,7 +216,8 @@ class TableCard extends React.Component {
         <GrowCardContent
           isVisible={content === CONTENT.BUILD}
           classes={classes}
-          title={build ? `${build.env} ${build.version} Build` : ""}
+          title="Build Details"
+          subheader={build ? `${build.env} v${build.version}` : ""}
           onClick={onReset}
         >
           <BuildDetailCardContent build={build} classes={classes} />

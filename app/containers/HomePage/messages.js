@@ -12,4 +12,8 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'CICD Workflow Status',
   },
+  searchLabel: {
+    id: `${scope}.search.label`,
+    defaultMessage: 'Search for Subsystem',
+  },
 });

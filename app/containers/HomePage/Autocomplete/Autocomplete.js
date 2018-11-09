@@ -17,6 +17,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import Paper from '@material-ui/core/Paper';
 import Autocomplete from 'components/Autocomplete';
 import Grid from '@material-ui/core/Grid';
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
 
 const styles = theme => ({
   root: {
@@ -87,6 +89,9 @@ const SubsystemAutocomplete = (props) => {
               inputProps: {
                 disableUnderline: true,
               },
+              noOptionsMessage: () => (
+                <FormattedMessage {...messages.searchLabel}/>
+              ),
             }}
           />
         </Grid>

@@ -7,5 +7,6 @@
   "ndash.containers.App.Drawer.pipelines": "Pipelines",
   "ndash.containers.App.Drawer.version": "v0.1.0",
   "ndash.containers.HomePage.header": "CICD Workflow Status",
+  "ndash.containers.HomePage.search.label": "Search for Subsystem",
   "ndash.containers.NotFoundPage.header": "This is the NotFoundPage container!"
 }

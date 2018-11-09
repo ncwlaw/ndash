@@ -11,7 +11,7 @@
 
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import messages from './messages';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -32,32 +32,13 @@ const TableCard = nest(CardWrapper, TCard);
 
 import { GET_SUBSYSTEMS, GET_BUILDS } from './constants';
 
-const enhance = compose(
-  withStateHandlers(
-    ({ initialFilter = [] }) => ({
-      filters: initialFilter,
-    }),
-    {
-      onFilterChange: () => (filters) => ({
-        filters
-      }),
-    }
-  ),
-  withProps(({ filters, subsystems, builds }) => ({
-    suggestions: R.map(({ subsystem: value }) => ({ value, label: value }))(subsystems),
-    source: R.reduce((acc, value) => {
-      const { subsystem, component, env } = value;
-      return R.assocPath([subsystem, component, env], value, acc);
-    }, {})(builds)
-  }))
-);
-
 const HomePage = props => {
   const {
     suggestions,
     source,
     filters,
     onFilterChange,
+    intl,
   } = props;
 
   return (
@@ -66,7 +47,7 @@ const HomePage = props => {
         isMulti
         value={filters}
         onChange={onFilterChange}
-        label="Search for Subsystem"
+        label={intl.formatMessage(messages.searchLabel)}
         source={suggestions}
       />
       <Grid
@@ -106,6 +87,27 @@ const HomePage = props => {
     </Fragment>
   );
 };
+
+const enhance = compose(
+  injectIntl,
+  withStateHandlers(
+    ({ initialFilter = [] }) => ({
+      filters: initialFilter,
+    }),
+    {
+      onFilterChange: () => (filters) => ({
+        filters
+      }),
+    }
+  ),
+  withProps(({ filters, subsystems, builds }) => ({
+    suggestions: R.map(({ subsystem: value }) => ({ value, label: value }))(subsystems),
+    source: R.reduce((acc, value) => {
+      const { subsystem, component, env } = value;
+      return R.assocPath([subsystem, component, env], value, acc);
+    }, {})(builds)
+  }))
+);
 
 const EnhancedHomePage = enhance(HomePage);
 
