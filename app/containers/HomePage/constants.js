@@ -1,8 +1,24 @@
 import gql from 'graphql-tag';
 
 const GET_BUILDS = gql`
-    query getBuilds {
-        builds {
+    query getBuilds($projectName: String!) {
+        builds(project: $projectName, status: "release") {
+            id
+            system
+            subsystem
+            component
+            env
+            event
+            status
+            version
+            buildUrl
+            tickets
+            commits {
+                author
+                message
+            }
+        }
+        certified: builds(project: $projectName, status: "certified") {
             id
             system
             subsystem

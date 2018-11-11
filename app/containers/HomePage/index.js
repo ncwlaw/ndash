@@ -102,7 +102,7 @@ const EnhancedHomePage = enhance(HomePage);
 const DataProvider = () => (
     <Query query={GET_SUBSYSTEMS}>
         {({ loading: loadingOne, error: errorOne, data: { subsystems } }) => (
-            <Query query={GET_BUILDS}>
+            <Query query={GET_BUILDS} variables={{ projectName: 'ngcc' }}>
                 {({
                     loading: loadingTwo,
                     error: errorTwo,
