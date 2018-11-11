@@ -12,4 +12,5 @@ npm-debug.log
 # Vim
 **/*.swp
 **/*.swo
-**/.session.vim
+app/.session.vim
+app/.undodir
