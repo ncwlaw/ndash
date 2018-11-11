@@ -1,58 +1,58 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 const GET_BUILDS = gql`
-  query getBuilds {
-    builds {
-      id
-      system
-      subsystem
-      component
-      env
-      event
-      status
-      version
-      buildUrl
-      tickets
-      commits {
-        author
-        message
-      }
+    query getBuilds {
+        builds {
+            id
+            system
+            subsystem
+            component
+            env
+            event
+            status
+            version
+            buildUrl
+            tickets
+            commits {
+                author
+                message
+            }
+        }
     }
-  }
 `;
 
 const GET_SUBSYSTEMS = gql`
-  query getSubsystems {
-    subsystems {
-      system
-      subsystem
+    query getSubsystems {
+        subsystems {
+            system
+            subsystem
+        }
     }
-  }
 `;
 
 const GET_PROJECTS = gql`
-  query getProjects {
-    projects {
-      system
+    query getProjects {
+        projects {
+            system
+        }
     }
-  }
 `;
 
 const CONTENT = Object.freeze({
-  METRICS: "METRICS",
-  BUILD: "BUILD",
-  TABLE: "TABLE",
+    METRICS: 'METRICS',
+    BUILD: 'BUILD',
+    TABLE: 'TABLE',
 });
 
 const COLUMN_HEADER_ORDER = Object.freeze({
-  prespace: 1,
-  postspace: 2,
+    prespace: 1,
+    postspace: 2,
 });
 
 export {
-  COLUMN_HEADER_ORDER,
-  CONTENT,
-  GET_BUILDS,
-  GET_SUBSYSTEMS,
-  GET_PROJECTS,
+    COLUMN_HEADER_ORDER,
+    CONTENT,
+    GET_BUILDS,
+    GET_SUBSYSTEMS,
+    GET_PROJECTS,
 };

@@ -9,6 +9,7 @@ stats.json
 npm-debug.log
 .idea
 
-# VIm
+# Vim
 **/*.swp
 **/*.swo
+**/.session.vim

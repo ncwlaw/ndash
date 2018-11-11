@@ -19,81 +19,99 @@ import { ICON_SIZE } from './constants';
 import messages from '../messages';
 
 const styles = theme => ({
-  root: {
-    width: "100%",
-  },
-  subheader: {
-    padding: "0 24px 5px",
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4,
-  },
+    root: {
+        width: '100%',
+    },
+    subheader: {
+        padding: '0 24px 5px',
+    },
+    nested: {
+        paddingLeft: theme.spacing.unit * 4,
+    },
 });
 
 class NestedList extends React.Component {
-  state = {
-    open: true,
-  };
+    state = {
+        open: true,
+    };
 
-  handleClick = () => {
-    this.setState(state => ({ open: !state.open }));
-  };
+    handleClick = () => {
+        this.setState(state => ({ open: !state.open }));
+    };
 
-  render() {
-    const { classes } = this.props;
+    render() {
+        const { classes } = this.props;
 
-    return (
-      <div className={classes.root}>
-        <List
-          component="nav"
-          subheader={
-            <ListSubheader
-              className={classes.subheader}
-              component="div"
-            >
-              <FormattedMessage {...messages.relatedLinks } />
-            </ListSubheader>
-          }
-        >
-          <Divider/>
-          <ListItemLink>
-            <ListItemIcon>
-              <img src={GithubImage} height={ICON_SIZE} width={ICON_SIZE} />
-            </ListItemIcon>
-            <ListItemText
-              inset
-              primary={<FormattedMessage {...messages.githubLink } />}
-            />
-          </ListItemLink>
-          <Divider/>
-          <ListItemLink>
-            <ListItemIcon>
-              <img src={JenkinsImage} height={ICON_SIZE} width={ICON_SIZE} />
-            </ListItemIcon>
-            <ListItemText
-              inset
-              primary={<FormattedMessage {...messages.jenkinsLink } />}
-            />
-          </ListItemLink>
-          <Divider/>
-          <ListItemLink>
-            <ListItemIcon>
-              <img src={JiraImage} height={ICON_SIZE} width={ICON_SIZE} />
-            </ListItemIcon>
-            <ListItemText
-              inset
-              primary={<FormattedMessage {...messages.jiraLink } />}
-            />
-          </ListItemLink>
-          <Divider/>
-        </List>
-      </div>
-    );
-  }
+        return (
+            <div className={classes.root}>
+                <List
+                    component="nav"
+                    subheader={
+                        <ListSubheader
+                            className={classes.subheader}
+                            component="div"
+                        >
+                            <FormattedMessage {...messages.relatedLinks} />
+                        </ListSubheader>
+                    }
+                >
+                    <Divider />
+                    <ListItemLink>
+                        <ListItemIcon>
+                            <img
+                                src={GithubImage}
+                                height={ICON_SIZE}
+                                width={ICON_SIZE}
+                            />
+                        </ListItemIcon>
+                        <ListItemText
+                            inset
+                            primary={
+                                <FormattedMessage {...messages.githubLink} />
+                            }
+                        />
+                    </ListItemLink>
+                    <Divider />
+                    <ListItemLink>
+                        <ListItemIcon>
+                            <img
+                                src={JenkinsImage}
+                                height={ICON_SIZE}
+                                width={ICON_SIZE}
+                            />
+                        </ListItemIcon>
+                        <ListItemText
+                            inset
+                            primary={
+                                <FormattedMessage {...messages.jenkinsLink} />
+                            }
+                        />
+                    </ListItemLink>
+                    <Divider />
+                    <ListItemLink>
+                        <ListItemIcon>
+                            <img
+                                src={JiraImage}
+                                height={ICON_SIZE}
+                                width={ICON_SIZE}
+                            />
+                        </ListItemIcon>
+                        <ListItemText
+                            inset
+                            primary={
+                                <FormattedMessage {...messages.jiraLink} />
+                            }
+                        />
+                    </ListItemLink>
+                    <Divider />
+                </List>
+            </div>
+        );
+    }
 }
 
 NestedList.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(NestedList);

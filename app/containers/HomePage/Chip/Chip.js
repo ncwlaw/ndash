@@ -8,14 +8,8 @@ import SuccessChip from './SuccessChip';
 import PendingChip from './PendingChip';
 
 const StatusChip = compose(
-  branch(
-    R.propEq('status', 'fail'),
-    renderComponent(FailChip)
-  ),
-  branch(
-    R.propEq('status', 'success'),
-    renderComponent(SuccessChip)
-  )
+    branch(R.propEq('status', 'fail'), renderComponent(FailChip)),
+    branch(R.propEq('status', 'success'), renderComponent(SuccessChip)),
 )(PendingChip);
 
 export default StatusChip;

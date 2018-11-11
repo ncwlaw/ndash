@@ -24,115 +24,103 @@ import * as R from 'ramda';
 import { Query } from 'react-apollo';
 import { getEnvironment } from './utils';
 
-import {
-  CardWrapper,
-  MetricCard,
-  TableCard as TCard,
-} from './Card';
+import { CardWrapper, MetricCard, TableCard as TCard } from './Card';
 const TableCard = nest(CardWrapper, TCard);
 
 import { GET_SUBSYSTEMS, GET_BUILDS } from './constants';
 
 const HomePage = props => {
-  const {
-    suggestions,
-    source,
-    filters,
-    onFilterChange,
-    intl,
-  } = props;
+    const { suggestions, source, filters, onFilterChange, intl } = props;
 
-  return (
-    <Fragment>
-      <Autocomplete
-        isMulti
-        value={filters}
-        onChange={onFilterChange}
-        label={intl.formatMessage(messages.searchLabel)}
-        source={suggestions}
-        emptyMessage={intl.formatMessage(messages.emptyMessage)}
-      />
-      <Grid
-        container
-        justify="space-between"
-        spacing={24}
-      >
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            color={lightGreen[500]}
-            title={<FormattedMessage {...messages.successCard} />}
-            value={1000}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            color={red[500]}
-            title={"Failed"}
-            title={<FormattedMessage {...messages.failCard} />}
-            value={1000}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <MetricCard
-            color={blue[500]}
-            title={<FormattedMessage {...messages.totalCard} />}
-            value={2000}
-          />
-        </Grid>
-      </Grid>
-      {Object.entries(source).map(([title, data]) =>
-        <TableCard
-          source={data}
-          key={title}
-          title={title}
-        />
-      )}
-    </Fragment>
-  );
+    return (
+        <Fragment>
+            <Autocomplete
+                isMulti
+                value={filters}
+                onChange={onFilterChange}
+                label={intl.formatMessage(messages.searchLabel)}
+                source={suggestions}
+                emptyMessage={intl.formatMessage(messages.emptyMessage)}
+            />
+            <Grid container justify="space-between" spacing={24}>
+                <Grid item xs={12} md={4}>
+                    <MetricCard
+                        color={lightGreen[500]}
+                        title={<FormattedMessage {...messages.successCard} />}
+                        value={1000}
+                    />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <MetricCard
+                        color={red[500]}
+                        title={'Failed'}
+                        title={<FormattedMessage {...messages.failCard} />}
+                        value={1000}
+                    />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <MetricCard
+                        color={blue[500]}
+                        title={<FormattedMessage {...messages.totalCard} />}
+                        value={2000}
+                    />
+                </Grid>
+            </Grid>
+            {Object.entries(source).map(([title, data]) => (
+                <TableCard source={data} key={title} title={title} />
+            ))}
+        </Fragment>
+    );
 };
 
 const enhance = compose(
-  injectIntl,
-  withStateHandlers(
-    ({ initialFilter = [] }) => ({
-      filters: initialFilter,
-    }),
-    {
-      onFilterChange: () => (filters) => ({
-        filters
-      }),
-    }
-  ),
-  withProps(({ filters, subsystems, builds }) => ({
-    suggestions: R.map(({ subsystem: value }) => ({ value, label: value }))(subsystems),
-    source: R.reduce((acc, value) => {
-      const { subsystem, component, env } = value;
-      const environment = getEnvironment(env);
-      return R.assocPath([subsystem, component, environment], value, acc);
-    }, {})(builds)
-  }))
+    injectIntl,
+    withStateHandlers(
+        ({ initialFilter = [] }) => ({
+            filters: initialFilter,
+        }),
+        {
+            onFilterChange: () => filters => ({
+                filters,
+            }),
+        },
+    ),
+    withProps(({ filters, subsystems, builds }) => ({
+        suggestions: R.map(({ subsystem: value }) => ({ value, label: value }))(
+            subsystems,
+        ),
+        source: R.reduce((acc, value) => {
+            const { subsystem, component, env } = value;
+            const environment = getEnvironment(env);
+            return R.assocPath([subsystem, component, environment], value, acc);
+        }, {})(builds),
+    })),
 );
 
 const EnhancedHomePage = enhance(HomePage);
 
 const DataProvider = () => (
-  <Query query={GET_SUBSYSTEMS}>
-    {({ loading: loadingOne, error: errorOne, data: { subsystems } }) => (
-      <Query query={GET_BUILDS}>
-        {({ loading: loadingTwo, error: errorTwo, data: { builds } }) => {
-          if (loadingOne || loadingTwo) return "loading...";
-          if (errorOne || errorTwo) return "Error!";
+    <Query query={GET_SUBSYSTEMS}>
+        {({ loading: loadingOne, error: errorOne, data: { subsystems } }) => (
+            <Query query={GET_BUILDS}>
+                {({
+                    loading: loadingTwo,
+                    error: errorTwo,
+                    data: { builds },
+                }) => {
+                    if (loadingOne || loadingTwo) return 'loading...';
+                    if (errorOne || errorTwo) return 'Error!';
 
-          return (
-            <EnhancedHomePage
-              builds={builds}
-              subsystems={subsystems}
-            />
-          )
-        }}
-      </Query>
-    )}
-  </Query>
-)
+                    return (
+                        <EnhancedHomePage
+                            builds={builds}
+                            subsystems={subsystems}
+                        />
+                    );
+                }}
+            </Query>
+        )}
+    </Query>
+);
 
 export default DataProvider;

@@ -23,30 +23,30 @@ import CloseIcon from '@material-ui/icons/Close';
 import red from '@material-ui/core/colors/red';
 
 const styles = theme => ({
-  root: {
-    backgroundColor: theme.palette.common.white,
-    margin: theme.spacing.unit,
-    padding: "0 15px",
-    fontSize: 14,
-    fontWeight: 500,
-    backgroundColor: '#fff',
-    borderColor: red['500'],
-    color: red['500'],
-  },
+    root: {
+        backgroundColor: theme.palette.common.white,
+        margin: theme.spacing.unit,
+        padding: '0 15px',
+        fontSize: 14,
+        fontWeight: 500,
+        backgroundColor: '#fff',
+        borderColor: red['500'],
+        color: red['500'],
+    },
 });
 
 const FailChip = ({ classes }) => (
-  <Chip
-    icon={<CloseIcon />}
-    label={<FormattedMessage {...messages.chipFailure} />}
-    className={classes.root}
-    color="primary"
-    variant="outlined"
-  />
-)
+    <Chip
+        icon={<CloseIcon />}
+        label={<FormattedMessage {...messages.chipFailure} />}
+        className={classes.root}
+        color="primary"
+        variant="outlined"
+    />
+);
 
 FailChip.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(FailChip);

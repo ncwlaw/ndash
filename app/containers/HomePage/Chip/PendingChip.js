@@ -17,27 +17,27 @@ import Chip from '@material-ui/core/Chip';
 import SyncIcon from '@material-ui/icons/Sync';
 
 const styles = theme => ({
-  root: {
-    backgroundColor: theme.palette.common.white,
-    margin: theme.spacing.unit,
-    padding: "0 15px",
-    fontSize: 14,
-    fontWeight: 500,
-  },
+    root: {
+        backgroundColor: theme.palette.common.white,
+        margin: theme.spacing.unit,
+        padding: '0 15px',
+        fontSize: 14,
+        fontWeight: 500,
+    },
 });
 
 const PendingChip = ({ classes }) => (
-  <Chip
-    icon={<SyncIcon />}
-    className={classes.root}
-    label={<FormattedMessage {...messages.chipPending} />}
-    color="primary"
-    variant="outlined"
-  />
-)
+    <Chip
+        icon={<SyncIcon />}
+        className={classes.root}
+        label={<FormattedMessage {...messages.chipPending} />}
+        color="primary"
+        variant="outlined"
+    />
+);
 
 PendingChip.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(PendingChip);

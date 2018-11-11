@@ -23,7 +23,7 @@ import apolloClient from 'utils/apollo';
 import App from 'containers/App';
 
 // Global theme
-import theme from 'global-theme'
+import theme from 'global-theme';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';

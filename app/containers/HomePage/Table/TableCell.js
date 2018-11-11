@@ -11,122 +11,91 @@ import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 
 const styles = theme => ({
-  cursor: {
-    cursor: "pointer",
-  },
-  cellContent: {
-    paddingRight: 20,
-  },
-  pendingContent: {
-    paddingLeft: 20,
-  },
-  cellContentIcon: {
-    fontSize: 20,
-  },
-  cancelIcon: {
-    color: red["500"],
-  },
-  successIcon: {
-    color: lightGreen["500"],
-  },
-  textOverflow: {
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-  },
+    cursor: {
+        cursor: 'pointer',
+    },
+    cellContent: {
+        paddingRight: 20,
+    },
+    pendingContent: {
+        paddingLeft: 20,
+    },
+    cellContentIcon: {
+        fontSize: 20,
+    },
+    cancelIcon: {
+        color: red['500'],
+    },
+    successIcon: {
+        color: lightGreen['500'],
+    },
+    textOverflow: {
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+    },
 });
 
 const Content = ({ icon, classes, children }) => (
-  <Grid
-    container
-    wrap="nowrap"
-    alignItems="center"
-  >
-    <Grid
-      item
-      className={classes.cellContent}
-    >
-      {icon}
+    <Grid container wrap="nowrap" alignItems="center">
+        <Grid item className={classes.cellContent}>
+            {icon}
+        </Grid>
+        <Grid item>{children}</Grid>
     </Grid>
-    <Grid item >
-      {children}
-    </Grid>
-  </Grid>
 );
 
 const FailContent = withStyles(styles)(({ classes, children }) => (
-  <Content
-    classes={{ cellContent: classes.cellContent }}
-    icon={
-      <CancelIcon className={cn(
-          classes.cellContentIcon,
-          classes.cancelIcon
-        )}
-      />
-    }
-  >
-    {children}
-  </Content>
+    <Content
+        classes={{ cellContent: classes.cellContent }}
+        icon={
+            <CancelIcon
+                className={cn(classes.cellContentIcon, classes.cancelIcon)}
+            />
+        }
+    >
+        {children}
+    </Content>
 ));
 
 const SuccessContent = withStyles(styles)(({ classes, children }) => (
-  <Content
-    classes={{ cellContent: classes.cellContent }}
-    icon={
-      <CheckCircleIcon
-        className={cn(
-          classes.cellContentIcon,
-          classes.successIcon,
-        )}
-      />
-    }
-  >
-    {children}
-  </Content>
+    <Content
+        classes={{ cellContent: classes.cellContent }}
+        icon={
+            <CheckCircleIcon
+                className={cn(classes.cellContentIcon, classes.successIcon)}
+            />
+        }
+    >
+        {children}
+    </Content>
 ));
 
 const PendingContent = withStyles(styles)(({ classes, children }) => (
-  <Content
-    classes={{ cellContent: classes.cellContent }}
-  >
-    <div className={classes.pendingContent} >
-      {children}
-    </div>
-  </Content>
+    <Content classes={{ cellContent: classes.cellContent }}>
+        <div className={classes.pendingContent}>{children}</div>
+    </Content>
 ));
 
 const CellContent = compose(
-  branch(
-    ({ status }) => status === "success",
-    renderComponent(SuccessContent)
-  ),
-  branch(
-    ({ status }) => status === "fail",
-    renderComponent(FailContent)
-  )
-)(PendingContent)
+    branch(
+        ({ status }) => status === 'success',
+        renderComponent(SuccessContent),
+    ),
+    branch(({ status }) => status === 'fail', renderComponent(FailContent)),
+)(PendingContent);
 
 function TableCellContent(props) {
-  const {
-    onClick,
-    classes,
-    children,
-    status,
-  } = props;
+    const { onClick, classes, children, status } = props;
 
-  return (
-    <TableCell
-      onClick={onClick}
-      className={cn(
-        classes.cursor,
-        classes.textOverflow
-      )}
-    >
-      <CellContent status={status}>
-        {children}
-      </CellContent>
-    </TableCell>
-  )
+    return (
+        <TableCell
+            onClick={onClick}
+            className={cn(classes.cursor, classes.textOverflow)}
+        >
+            <CellContent status={status}>{children}</CellContent>
+        </TableCell>
+    );
 }
 
 export default withStyles(styles)(TableCellContent);

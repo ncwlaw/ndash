@@ -1,8 +1,8 @@
 /**
-    *
-    * Autocomplete
-    *
-    */
+ *
+ * Autocomplete
+ *
+ */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -33,7 +33,9 @@ const styles = theme => ({
     },
     chipFocused: {
         backgroundColor: emphasize(
-            theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            theme.palette.type === 'light'
+                ? theme.palette.grey[300]
+                : theme.palette.grey[700],
             0.08,
         ),
     },
@@ -63,11 +65,11 @@ const styles = theme => ({
 function NoOptionsMessage(props) {
     return (
         <Typography
-        color="textSecondary"
-        className={props.selectProps.classes.noOptionsMessage}
-        {...props.innerProps}
+            color="textSecondary"
+            className={props.selectProps.classes.noOptionsMessage}
+            {...props.innerProps}
         >
-        {props.children}
+            {props.children}
         </Typography>
     );
 }
@@ -79,18 +81,18 @@ function inputComponent({ inputRef, ...props }) {
 function Control(props) {
     return (
         <TextField
-        fullWidth
-        InputProps={{
-            inputComponent,
+            fullWidth
+            InputProps={{
+                inputComponent,
                 inputProps: {
                     className: props.selectProps.classes.input,
-                        inputRef: props.innerRef,
-                        children: props.children,
-                        ...props.innerProps,
+                    inputRef: props.innerRef,
+                    children: props.children,
+                    ...props.innerProps,
                 },
                 ...props.selectProps.inputProps,
-        }}
-        {...props.selectProps.textFieldProps}
+            }}
+            {...props.selectProps.textFieldProps}
         />
     );
 }
@@ -98,15 +100,15 @@ function Control(props) {
 function Option(props) {
     return (
         <MenuItem
-        buttonRef={props.innerRef}
-        selected={props.isFocused}
-        component="div"
-        style={{
-            fontWeight: props.isSelected ? 500 : 400,
-        }}
-        {...props.innerProps}
+            buttonRef={props.innerRef}
+            selected={props.isFocused}
+            component="div"
+            style={{
+                fontWeight: props.isSelected ? 500 : 400,
+            }}
+            {...props.innerProps}
         >
-        {props.children}
+            {props.children}
         </MenuItem>
     );
 }
@@ -114,52 +116,63 @@ function Option(props) {
 function Placeholder(props) {
     return (
         <Typography
-        color="textSecondary"
-        className={props.selectProps.classes.placeholder}
-        {...props.innerProps}
+            color="textSecondary"
+            className={props.selectProps.classes.placeholder}
+            {...props.innerProps}
         >
-        {props.children}
+            {props.children}
         </Typography>
     );
 }
 
 function SingleValue(props) {
     return (
-        <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
-        {props.children}
+        <Typography
+            className={props.selectProps.classes.singleValue}
+            {...props.innerProps}
+        >
+            {props.children}
         </Typography>
     );
 }
 
 function ValueContainer(props) {
-    return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+    return (
+        <div className={props.selectProps.classes.valueContainer}>
+            {props.children}
+        </div>
+    );
 }
 
 function MultiValue(props) {
     return (
         <Chip
-        tabIndex={-1}
-        label={props.children}
-        className={classNames(props.selectProps.classes.chip, {
-            [props.selectProps.classes.chipFocused]: props.isFocused,
-        })}
-        onDelete={props.removeProps.onClick}
-        deleteIcon={<CancelIcon {...props.removeProps} />}
+            tabIndex={-1}
+            label={props.children}
+            className={classNames(props.selectProps.classes.chip, {
+                [props.selectProps.classes.chipFocused]: props.isFocused,
+            })}
+            onDelete={props.removeProps.onClick}
+            deleteIcon={<CancelIcon {...props.removeProps} />}
         />
     );
 }
 
 function Menu(props) {
     return (
-        <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
-        {props.children}
+        <Paper
+            square
+            className={props.selectProps.classes.paper}
+            {...props.innerProps}
+        >
+            {props.children}
         </Paper>
     );
 }
 
-function IndicatorsContainer (props) {
+function IndicatorsContainer(props) {
     return null;
-};
+}
 
 const components = {
     Control,
@@ -174,7 +187,7 @@ const components = {
 };
 
 class Autocomplete extends React.Component {
-    getStyles = (base) => ({ ...base, ...this.props.styles })
+    getStyles = base => ({ ...base, ...this.props.styles });
 
     render() {
         const {
@@ -190,15 +203,15 @@ class Autocomplete extends React.Component {
 
         return (
             <Select
-            classes={classes}
-            styles={this.getStyles()}
-            options={source}
-            components={components}
-            value={value}
-            onChange={onChange}
-            placeholder={label}
-            isMulti={isMulti}
-            {...componentProps}
+                classes={classes}
+                styles={this.getStyles()}
+                options={source}
+                components={components}
+                value={value}
+                onChange={onChange}
+                placeholder={label}
+                isMulti={isMulti}
+                {...componentProps}
             />
         );
     }

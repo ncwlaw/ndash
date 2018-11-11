@@ -16,97 +16,96 @@ import messages from '../messages';
 import { COLUMN_HEADER_ORDER } from '../constants';
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
-  },
-  tableHeader: {
-    marginLeft: 40,
-  },
+    root: {
+        width: '100%',
+        marginTop: theme.spacing.unit * 3,
+        overflowX: 'auto',
+    },
+    table: {
+        minWidth: 700,
+    },
+    tableHeader: {
+        marginLeft: 40,
+    },
 });
 
 const rowString = R.compose(
-  R.join('_'),
-  R.values
+    R.join('_'),
+    R.values,
 );
 
 function SimpleTable(props) {
-  const {
-    classes,
-    source,
-    headers,
-    onClick,
-  } = props;
+    const { classes, source, headers, onClick } = props;
 
-  const [start, ...environments] = headers;
+    const [start, ...environments] = headers;
 
-  return (
-    <Table className={classes.table}>
-      <TableHead>
-        <TableRow>
-          {headers.map((header, index) => (
-            <TableCell key={index}>
-              <div className={classes.tableHeader}>
-                <FormattedMessage {...messages[header]} />
-              </div>
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {Object.entries(source).map(([component, row], rowIndex) => (
-          <TableRow hover key={rowString(row)}>
-            <TableCell>
-              <div className={classes.tableHeader}>
-                {component}
-              </div>
-            </TableCell>
-            {environments.map((environment, colIndex) => (
-              <TableCellData
-                key={`${rowIndex}_${colIndex}`}
-                onClick={() => onClick(row[environment])}
-                status={row[environment].status}
-              >
-                {row[environment].version}
-              </TableCellData>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+    return (
+        <Table className={classes.table}>
+            <TableHead>
+                <TableRow>
+                    {headers.map((header, index) => (
+                        <TableCell key={index}>
+                            <div className={classes.tableHeader}>
+                                <FormattedMessage {...messages[header]} />
+                            </div>
+                        </TableCell>
+                    ))}
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {Object.entries(source).map(([component, row], rowIndex) => (
+                    <TableRow hover key={rowString(row)}>
+                        <TableCell>
+                            <div className={classes.tableHeader}>
+                                {component}
+                            </div>
+                        </TableCell>
+                        {environments.map((environment, colIndex) => (
+                            <TableCellData
+                                key={`${rowIndex}_${colIndex}`}
+                                onClick={() => onClick(row[environment])}
+                                status={row[environment].status}
+                            >
+                                {row[environment].version}
+                            </TableCellData>
+                        ))}
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    );
 }
 
 SimpleTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-  source: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+    source: PropTypes.object.isRequired,
 };
 
 SimpleTable.defaultProps = {
-  source: {},
+    source: {},
 };
 
 const enhance = compose(
-  withProps(({ source }) => ({
-    headers: R.compose(
-      R.prepend('component'),
-      R.sort(R.comparator(
-        (a, b) => COLUMN_HEADER_ORDER[a] < COLUMN_HEADER_ORDER[b])
-      ),
-      R.uniq,
-      R.reduce(R.concat, []),
-      R.map(R.compose(
-        R.keys,
-        R.last,
-      )),
-      R.toPairs
-    )(source)
-  })),
-  withStyles(styles),
+    withProps(({ source }) => ({
+        headers: R.compose(
+            R.prepend('component'),
+            R.sort(
+                R.comparator(
+                    (a, b) => COLUMN_HEADER_ORDER[a] < COLUMN_HEADER_ORDER[b],
+                ),
+            ),
+            R.uniq,
+            R.reduce(R.concat, []),
+            R.map(
+                R.compose(
+                    R.keys,
+                    R.last,
+                ),
+            ),
+            R.toPairs,
+        )(source),
+    })),
+    withStyles(styles),
 );
 
 export default enhance(SimpleTable);

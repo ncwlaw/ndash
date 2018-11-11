@@ -23,22 +23,22 @@ import { DEFAULT_PROJECTS } from './constants';
 import GlobalStyle from 'global-styles';
 
 export default function App() {
-  return (
-    <Wrapper>
-      <CssBaseline />
-      <AppBar />
-      <Drawer projects={DEFAULT_PROJECTS}/>
-      <Main>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/projects/:name" component={HomePage} />
-          <Route exact path="/monitoring" component={NotFoundPage} />
-          <Route exact path="/metrics" component={NotFoundPage} />
-          <Route exact path="/configure" component={NotFoundPage} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </Main>
-      <GlobalStyle />
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <CssBaseline />
+            <AppBar />
+            <Drawer projects={DEFAULT_PROJECTS} />
+            <Main>
+                <Switch>
+                    <Route exact path="/" component={HomePage} />
+                    <Route exact path="/projects/:name" component={HomePage} />
+                    <Route exact path="/monitoring" component={NotFoundPage} />
+                    <Route exact path="/metrics" component={NotFoundPage} />
+                    <Route exact path="/configure" component={NotFoundPage} />
+                    <Route component={NotFoundPage} />
+                </Switch>
+            </Main>
+            <GlobalStyle />
+        </Wrapper>
+    );
 }

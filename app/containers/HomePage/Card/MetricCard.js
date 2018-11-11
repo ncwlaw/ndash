@@ -18,92 +18,97 @@ import Grow from '@material-ui/core/Grow';
 import { prop } from 'ramda';
 
 const styles = theme => ({
-  root: {
-    height: "250px",
-    margin: "20px 0",
-    position: 'relative',
-  },
-  cardContent: {
-    height: "100%",
-  },
-  infoIcon: {
-    color: "#fff",
-  },
-  typography: {
-    color: common['white'],
-  },
-  infoButton: {
-    right: "0",
-    position: 'absolute' ,
-    zIndex: theme.zIndex.high,
-  },
-  growContainer: {
-    backgroundColor: "#fff",
-    height: "100%",
-    width: "100%",
-    position: "absolute",
-    color: theme.palette.text.primary,
-    top: 0,
-    left: 0,
-  },
+    root: {
+        height: '250px',
+        margin: '20px 0',
+        position: 'relative',
+    },
+    cardContent: {
+        height: '100%',
+    },
+    infoIcon: {
+        color: '#fff',
+    },
+    typography: {
+        color: common['white'],
+    },
+    infoButton: {
+        right: '0',
+        position: 'absolute',
+        zIndex: theme.zIndex.high,
+    },
+    growContainer: {
+        backgroundColor: '#fff',
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        color: theme.palette.text.primary,
+        top: 0,
+        left: 0,
+    },
 });
 
-const ActionIcon = branch(
-  prop('isCollapse'),
-  renderComponent(CloseIcon),
-)(() => <InfoIcon style={{ color: 'white' }}/>);
+const ActionIcon = branch(prop('isCollapse'), renderComponent(CloseIcon))(
+    () => <InfoIcon style={{ color: 'white' }} />,
+);
 
 class MetricCard extends React.Component {
-  render() {
-    const {
-      classes,
-      title,
-      value,
-      color,
-      isCollapse,
-      theme,
-      toggleCollapse,
-    } = this.props;
+    render() {
+        const {
+            classes,
+            title,
+            value,
+            color,
+            isCollapse,
+            theme,
+            toggleCollapse,
+        } = this.props;
 
-    return (
-      <Card
-        style={{ backgroundColor: color, color: "#fff" }}
-        className={classes.root}
-      >
-        <IconButton onClick={toggleCollapse} className={classes.infoButton}>
-          <ActionIcon isCollapse={isCollapse} />
-        </IconButton>
-        <Grid
-          justify="center"
-          direction="column"
-          alignItems="center"
-          container
-          className={classes.cardContent}
-        >
-          <Typography className={classes.typography} variant="h3">
-            { value }
-          </Typography>
-          <Typography className={classes.typography} variant="subtitle2">
-            { title }
-          </Typography>
-        </Grid>
-        <Grow in={isCollapse} timout="auto" unmountOnExit>
-          <div className={classes.growContainer}>
-            <StackedBarChart />
-          </div>
-        </Grow>
-      </Card>
-    );
-  }
+        return (
+            <Card
+                style={{ backgroundColor: color, color: '#fff' }}
+                className={classes.root}
+            >
+                <IconButton
+                    onClick={toggleCollapse}
+                    className={classes.infoButton}
+                >
+                    <ActionIcon isCollapse={isCollapse} />
+                </IconButton>
+                <Grid
+                    justify="center"
+                    direction="column"
+                    alignItems="center"
+                    container
+                    className={classes.cardContent}
+                >
+                    <Typography className={classes.typography} variant="h3">
+                        {value}
+                    </Typography>
+                    <Typography
+                        className={classes.typography}
+                        variant="subtitle2"
+                    >
+                        {title}
+                    </Typography>
+                </Grid>
+                <Grow in={isCollapse} timout="auto" unmountOnExit>
+                    <div className={classes.growContainer}>
+                        <StackedBarChart />
+                    </div>
+                </Grow>
+            </Card>
+        );
+    }
 }
 
 MetricCard.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 const enhance = compose(
-  withCollapse,
-  withStyles(styles)
+    withCollapse,
+    withStyles(styles),
 );
 
 export default enhance(MetricCard);

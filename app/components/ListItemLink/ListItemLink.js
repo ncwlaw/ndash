@@ -1,10 +1,10 @@
 /**
-*
-* ListItemLink
-*
-* Wrapper around ListItem
-*
-*/
+ *
+ * ListItemLink
+ *
+ * Wrapper around ListItem
+ *
+ */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -21,7 +21,7 @@ ListItemLink.propTypes = {
 };
 
 ListItemLink.defaultProps = {
-    href: "#",
+    href: '#',
 };
 
 export default ListItemLink;

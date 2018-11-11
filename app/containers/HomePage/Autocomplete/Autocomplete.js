@@ -21,86 +21,69 @@ import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 const styles = theme => ({
-  root: {
-    padding: 15,
-    minHeight: 70,
-    display: "flex",
-    alignItems: "center",
-  },
-  autoCompleteContainer: {
-    flexGrow: 1,
-  },
-  input: {
-    borderBottom: 0,
-  },
-  placeholder: {
-    fontWeight: 500,
-    borderBottom: 0,
-  },
-  searchIconContainer: {
-    padding: "0 20px 0 0",
-  },
+    root: {
+        padding: 15,
+        minHeight: 70,
+        display: 'flex',
+        alignItems: 'center',
+    },
+    autoCompleteContainer: {
+        flexGrow: 1,
+    },
+    input: {
+        borderBottom: 0,
+    },
+    placeholder: {
+        fontWeight: 500,
+        borderBottom: 0,
+    },
+    searchIconContainer: {
+        padding: '0 20px 0 0',
+    },
 });
 
-const SubsystemAutocomplete = (props) => {
-  const {
-    theme,
-    classes,
-    emptyMessage,
-    ...rest
-  } = props;
+const SubsystemAutocomplete = props => {
+    const { theme, classes, emptyMessage, ...rest } = props;
 
-  const selectStyles = {
-    input: base => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
-  };
+    const selectStyles = {
+        input: base => ({
+            ...base,
+            color: theme.palette.text.primary,
+            '& input': {
+                font: 'inherit',
+            },
+        }),
+    };
 
-  return (
-    <Paper
-      className={classes.root}
-      elevation={1}
-    >
-      <Grid
-        container
-        alignItems="center"
-      >
-        <Grid
-          className={classes.searchIconContainer}
-          item
-        >
-          <SearchIcon color="action"/>
-        </Grid>
-        <Grid
-          className={classes.autoCompleteContainer}
-          item
-        >
-          <Autocomplete
-            {...rest}
-            styles={selectStyles}
-            classes={{
-              placeholder: classes.placeholder,
-              input: classes.input,
-            }}
-            componentProps={{
-              inputProps: {
-                disableUnderline: true,
-              },
-              noOptionsMessage: () => emptyMessage,
-            }}
-          />
-        </Grid>
-      </Grid>
-    </Paper>
-  );
+    return (
+        <Paper className={classes.root} elevation={1}>
+            <Grid container alignItems="center">
+                <Grid className={classes.searchIconContainer} item>
+                    <SearchIcon color="action" />
+                </Grid>
+                <Grid className={classes.autoCompleteContainer} item>
+                    <Autocomplete
+                        {...rest}
+                        styles={selectStyles}
+                        classes={{
+                            placeholder: classes.placeholder,
+                            input: classes.input,
+                        }}
+                        componentProps={{
+                            inputProps: {
+                                disableUnderline: true,
+                            },
+                            noOptionsMessage: () => emptyMessage,
+                        }}
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
+    );
 };
 
 SubsystemAutocomplete.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(SubsystemAutocomplete);

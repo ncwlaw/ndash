@@ -8,5 +8,5 @@ export default withStateHandlers(
         toggleCollapse: ({ isCollapse }) => () => ({
             isCollapse: !isCollapse,
         }),
-    }
+    },
 );
