@@ -5,7 +5,7 @@
 // import List from '../index';
 
 describe('<List />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
-  });
+    it('Expect to have unit tests specified', () => {
+        expect(true).toEqual(false);
+    });
 });

@@ -18,6 +18,7 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Drawer from './Drawer';
 import Main from './Main';
 import Wrapper from './Wrapper';
+import { DEFAULT_PROJECTS } from './constants';
 
 import GlobalStyle from 'global-styles';
 
@@ -26,7 +27,7 @@ export default function App() {
     <Wrapper>
       <CssBaseline />
       <AppBar />
-      <Drawer projects={['NGCC']}/>
+      <Drawer projects={DEFAULT_PROJECTS}/>
       <Main>
         <Switch>
           <Route exact path="/" component={HomePage} />

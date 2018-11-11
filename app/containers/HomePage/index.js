@@ -22,6 +22,7 @@ import Autocomplete from './Autocomplete';
 import { compose, nest, withProps, withStateHandlers } from 'recompose';
 import * as R from 'ramda';
 import { Query } from 'react-apollo';
+import { getEnvironment } from './utils';
 
 import {
   CardWrapper,
@@ -49,6 +50,7 @@ const HomePage = props => {
         onChange={onFilterChange}
         label={intl.formatMessage(messages.searchLabel)}
         source={suggestions}
+        emptyMessage={intl.formatMessage(messages.emptyMessage)}
       />
       <Grid
         container
@@ -58,7 +60,7 @@ const HomePage = props => {
         <Grid item xs={12} md={4}>
           <MetricCard
             color={lightGreen[500]}
-            title="Passed"
+            title={<FormattedMessage {...messages.successCard} />}
             value={1000}
           />
         </Grid>
@@ -66,13 +68,14 @@ const HomePage = props => {
           <MetricCard
             color={red[500]}
             title={"Failed"}
+            title={<FormattedMessage {...messages.failCard} />}
             value={1000}
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <MetricCard
             color={blue[500]}
-            title={"Total"}
+            title={<FormattedMessage {...messages.totalCard} />}
             value={2000}
           />
         </Grid>
@@ -104,7 +107,8 @@ const enhance = compose(
     suggestions: R.map(({ subsystem: value }) => ({ value, label: value }))(subsystems),
     source: R.reduce((acc, value) => {
       const { subsystem, component, env } = value;
-      return R.assocPath([subsystem, component, env], value, acc);
+      const environment = getEnvironment(env);
+      return R.assocPath([subsystem, component, environment], value, acc);
     }, {})(builds)
   }))
 );

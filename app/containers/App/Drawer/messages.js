@@ -14,7 +14,7 @@ export default defineMessages({
   },
   version: {
     id: `${scope}.version`,
-    defaultMessage: 'v0.1.0',
+    defaultMessage: `v{version}`,
   },
   pipelines: {
     id: `${scope}.pipelines`,

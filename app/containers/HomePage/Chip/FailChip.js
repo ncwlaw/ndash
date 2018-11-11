@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
 
 /**
  * Components
@@ -36,7 +38,7 @@ const styles = theme => ({
 const FailChip = ({ classes }) => (
   <Chip
     icon={<CloseIcon />}
-    label="Failure"
+    label={<FormattedMessage {...messages.chipFailure} />}
     className={classes.root}
     color="primary"
     variant="outlined"

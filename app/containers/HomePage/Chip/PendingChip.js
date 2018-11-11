@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
 
 /**
  * Components
@@ -28,7 +30,7 @@ const PendingChip = ({ classes }) => (
   <Chip
     icon={<SyncIcon />}
     className={classes.root}
-    label="Pending"
+    label={<FormattedMessage {...messages.chipPending} />}
     color="primary"
     variant="outlined"
   />

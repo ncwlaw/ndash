@@ -11,6 +11,15 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
   },
+  zIndex: {
+    highest: 300,
+    higher: 200,
+    high: 100,
+    normal: 1,
+    low: -100,
+    lower: -200,
+    lowest: -300,
+  }
 });
 
 export default theme

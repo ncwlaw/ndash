@@ -39,7 +39,12 @@ const Menu = ({ classes, intl, projects }) => {
         </Grid>
         <Grid item xs={12}>
           <Typography align="justify" variant="caption">
-            <FormattedMessage {...messages.version} />
+            <FormattedMessage
+              {...messages.version}
+              values={{
+                version: process.env.VERSION,
+              }}
+            />
           </Typography>
         </Grid>
       </Grid>

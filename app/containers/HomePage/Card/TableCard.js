@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import cn from 'classnames';
 import { compose, withStateHandlers } from 'recompose';
+import { FormattedMessage } from 'react-intl';
 import dateFns from 'date-fns';
 import * as R from 'ramda';
+import messages from '../messages';
 
 import withCollapse from 'components/utils/collapse';
 import { CONTENT } from '../constants';
@@ -208,7 +210,7 @@ class TableCard extends React.Component {
         <GrowCardContent
           isVisible={content === CONTENT.METRICS}
           classes={classes}
-          title="Metrics"
+          title={<FormattedMessage {...messages.metrics} />}
           onClick={onReset}
         >
           <BarChartCardContent classes={classes} />
@@ -216,8 +218,16 @@ class TableCard extends React.Component {
         <GrowCardContent
           isVisible={content === CONTENT.BUILD}
           classes={classes}
-          title="Build Details"
-          subheader={build ? `${build.env} v${build.version}` : ""}
+          title={<FormattedMessage {...messages.buildTitle} />}
+          subheader={
+            <FormattedMessage
+              {...messages.buildSubheader}
+              values={{
+                environment: build.env,
+                version: build.version,
+              }}
+            />
+          }
           onClick={onReset}
         >
           <BuildDetailCardContent build={build} classes={classes} />
@@ -240,7 +250,7 @@ const enhance = compose(
       build: initialBuild,
     }),
     {
-      onChange: () => (value, build) => ({
+      onChange: () => (value, build = {}) => ({
         content: value,
         build,
       }),

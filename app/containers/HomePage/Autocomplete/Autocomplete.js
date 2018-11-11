@@ -46,6 +46,7 @@ const SubsystemAutocomplete = (props) => {
   const {
     theme,
     classes,
+    emptyMessage,
     ...rest
   } = props;
 
@@ -89,9 +90,7 @@ const SubsystemAutocomplete = (props) => {
               inputProps: {
                 disableUnderline: true,
               },
-              noOptionsMessage: () => (
-                <FormattedMessage {...messages.searchLabel}/>
-              ),
+              noOptionsMessage: () => emptyMessage,
             }}
           />
         </Grid>

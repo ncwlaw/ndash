@@ -8,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Divider from '@material-ui/core/Divider';
+import { FormattedMessage } from 'react-intl';
 
 import ListItemLink from 'components/ListItemLink';
 import GithubImage from 'images/github.png';
@@ -15,6 +16,7 @@ import JenkinsImage from 'images/jenkins.svg';
 import JiraImage from 'images/jira.png';
 
 import { ICON_SIZE } from './constants';
+import messages from '../messages';
 
 const styles = theme => ({
   root: {
@@ -49,7 +51,7 @@ class NestedList extends React.Component {
               className={classes.subheader}
               component="div"
             >
-              Related Links
+              <FormattedMessage {...messages.relatedLinks } />
             </ListSubheader>
           }
         >
@@ -58,21 +60,30 @@ class NestedList extends React.Component {
             <ListItemIcon>
               <img src={GithubImage} height={ICON_SIZE} width={ICON_SIZE} />
             </ListItemIcon>
-            <ListItemText inset primary="Github pull request" />
+            <ListItemText
+              inset
+              primary={<FormattedMessage {...messages.githubLink } />}
+            />
           </ListItemLink>
           <Divider/>
           <ListItemLink>
             <ListItemIcon>
               <img src={JenkinsImage} height={ICON_SIZE} width={ICON_SIZE} />
             </ListItemIcon>
-          <ListItemText inset primary="Jenkins build link" />
+            <ListItemText
+              inset
+              primary={<FormattedMessage {...messages.jenkinsLink } />}
+            />
           </ListItemLink>
           <Divider/>
           <ListItemLink>
             <ListItemIcon>
               <img src={JiraImage} height={ICON_SIZE} width={ICON_SIZE} />
             </ListItemIcon>
-            <ListItemText inset primary="Jira ticket link" />
+            <ListItemText
+              inset
+              primary={<FormattedMessage {...messages.jiraLink } />}
+            />
           </ListItemLink>
           <Divider/>
         </List>

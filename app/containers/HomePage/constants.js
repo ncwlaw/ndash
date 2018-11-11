@@ -44,9 +44,15 @@ const CONTENT = Object.freeze({
   TABLE: "TABLE",
 });
 
+const COLUMN_HEADER_ORDER = Object.freeze({
+  prespace: 1,
+  postspace: 2,
+});
+
 export {
+  COLUMN_HEADER_ORDER,
+  CONTENT,
   GET_BUILDS,
   GET_SUBSYSTEMS,
   GET_PROJECTS,
-  CONTENT,
 };

@@ -10,6 +10,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import * as R from 'ramda';
 import TableCellData from './TableCell';
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
+
+import { COLUMN_HEADER_ORDER } from '../constants';
 
 const styles = theme => ({
   root: {
@@ -47,7 +51,7 @@ function SimpleTable(props) {
           {headers.map((header, index) => (
             <TableCell key={index}>
               <div className={classes.tableHeader}>
-                {header}
+                <FormattedMessage {...messages[header]} />
               </div>
             </TableCell>
           ))}
@@ -89,7 +93,10 @@ SimpleTable.defaultProps = {
 const enhance = compose(
   withProps(({ source }) => ({
     headers: R.compose(
-      R.prepend('Component'),
+      R.prepend('component'),
+      R.sort(R.comparator(
+        (a, b) => COLUMN_HEADER_ORDER[a] < COLUMN_HEADER_ORDER[b])
+      ),
       R.uniq,
       R.reduce(R.concat, []),
       R.map(R.compose(
