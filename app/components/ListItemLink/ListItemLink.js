@@ -13,7 +13,7 @@ import ListItem from '@material-ui/core/ListItem';
 // import styled from 'styled-components';
 
 function ListItemLink(props) {
-    return <ListItem button component="a" {...props} />;
+    return <ListItem {...props} button component="a" target="_blank" />;
 }
 
 ListItemLink.propTypes = {

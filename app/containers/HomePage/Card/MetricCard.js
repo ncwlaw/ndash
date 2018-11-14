@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import cn from 'classnames';
-import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import common from '@material-ui/core/colors/common';
@@ -11,11 +10,13 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Cancel';
 import Grid from '@material-ui/core/Grid';
+import Grow from '@material-ui/core/Grow';
 import { branch, renderComponent, compose } from 'recompose';
 import withCollapse from 'components/utils/collapse';
-import { StackedBarChart } from '../Chart';
-import Grow from '@material-ui/core/Grow';
-import { prop } from 'ramda';
+import { AreaChart, BarChart } from '../Chart';
+import * as R from 'ramda';
+import { FormattedMessage } from 'react-intl';
+import messages from '../messages';
 
 const styles = theme => ({
     root: {
@@ -46,11 +47,18 @@ const styles = theme => ({
         top: 0,
         left: 0,
     },
+    cardTitle: {
+        padding: '10px 20px',
+    },
 });
 
-const ActionIcon = branch(prop('isCollapse'), renderComponent(CloseIcon))(
-    () => <InfoIcon style={{ color: 'white' }} />,
-);
+const CloseIconComponent = () => <CloseIcon />;
+const InfoIconComponent = () => <InfoIcon style={{ color: 'white' }} />;
+
+const ActionIcon = branch(
+    R.prop('isCollapse'),
+    renderComponent(CloseIconComponent),
+)(InfoIconComponent);
 
 class MetricCard extends React.Component {
     render() {
@@ -62,6 +70,9 @@ class MetricCard extends React.Component {
             isCollapse,
             theme,
             toggleCollapse,
+            source,
+            fieldName,
+            colorOffset,
         } = this.props;
 
         return (
@@ -94,7 +105,32 @@ class MetricCard extends React.Component {
                 </Grid>
                 <Grow in={isCollapse} timout="auto" unmountOnExit>
                     <div className={classes.growContainer}>
-                        <StackedBarChart />
+                        <Grid
+                            className={classes.cardContent}
+                            container
+                            direction="column"
+                            wrap="nowrap"
+                        >
+                            <Grid item>
+                                <div className={classes.cardTitle}>
+                                    <Typography variant="title">
+                                        <FormattedMessage
+                                            {...messages.weeklyMetrics}
+                                        />
+                                    </Typography>
+                                </div>
+                            </Grid>
+                            <Grid xs={12} item>
+                                <AreaChart
+                                    source={source}
+                                    xAxis="id"
+                                    yAxes={R.reject(R.equals('id'))(
+                                        R.keys(source[0]),
+                                    )}
+                                    colorOffset={colorOffset}
+                                />
+                            </Grid>
+                        </Grid>
                     </div>
                 </Grow>
             </Card>

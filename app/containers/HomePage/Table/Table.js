@@ -45,9 +45,7 @@ function SimpleTable(props) {
                 <TableRow>
                     {headers.map((header, index) => (
                         <TableCell key={index}>
-                            <div className={classes.tableHeader}>
-                                <FormattedMessage {...messages[header]} />
-                            </div>
+                            <div className={classes.tableHeader}>{header}</div>
                         </TableCell>
                     ))}
                 </TableRow>
@@ -64,9 +62,9 @@ function SimpleTable(props) {
                             <TableCellData
                                 key={`${rowIndex}_${colIndex}`}
                                 onClick={() => onClick(row[environment])}
-                                status={row[environment].status}
+                                status={row[environment].buildStatus}
                             >
-                                {row[environment].version}
+                                {row[environment].buildVersion}
                             </TableCellData>
                         ))}
                     </TableRow>
@@ -88,7 +86,7 @@ SimpleTable.defaultProps = {
 const enhance = compose(
     withProps(({ source }) => ({
         headers: R.compose(
-            R.prepend('component'),
+            R.prepend('Component'),
             R.sort(
                 R.comparator(
                     (a, b) => COLUMN_HEADER_ORDER[a] < COLUMN_HEADER_ORDER[b],

@@ -13,28 +13,28 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 
-const StackedBarChart = ({ source }) => {
+const SimpleBarChart = ({ source, xKey, yKey, color }) => {
     return (
         <ResponsiveContainer height="100%" width="100%">
             <BarChart
                 data={source}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
             >
                 <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey={xKey} />
                 <YAxis />
                 <Legend />
                 <Tooltip />
-                <Bar
-                    maxBarSize={40}
-                    dataKey="pass"
-                    stackId="a"
-                    fill={green['400']}
-                />
-                {/*<Bar dataKey="fail" stackId="a" fill={red['400']} />*/}
+                <Bar maxBarSize={40} dataKey={yKey} stackId="a" fill={color} />
             </BarChart>
         </ResponsiveContainer>
     );
 };
 
-export default StackedBarChart;
+SimpleBarChart.propTypes = {
+    xKey: PropTypes.string.isRequired,
+    yKey: PropTypes.string.isRequired,
+    source: PropTypes.array.isRequired,
+};
+
+export default SimpleBarChart;

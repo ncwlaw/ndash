@@ -24,6 +24,10 @@ export default defineMessages({
         id: `${scope}.metrics`,
         defaultMessage: 'Metrics',
     },
+    successfulMetrics: {
+        id: `${scope}.successful.metrics`,
+        defaultMessage: 'Successful Deployments',
+    },
     buildTitle: {
         id: `${scope}.build.title`,
         defaultMessage: 'Build Details',
@@ -32,21 +36,21 @@ export default defineMessages({
         id: `${scope}.build.subheader`,
         defaultMessage: `{environment} v{version}`,
     },
-    prespace: {
-        id: `${scope}.prespace`,
-        defaultMessage: 'Pre-Space',
-    },
-    postspace: {
-        id: `${scope}.postspace`,
-        defaultMessage: 'Post-Space',
-    },
     component: {
         id: `${scope}.component`,
         defaultMessage: 'Component',
     },
-    relatedLinks: {
-        id: `${scope}.relatedLinks`,
-        defaultMessage: 'Related Links',
+    jenkinsLinks: {
+        id: `${scope}.jenkins.links`,
+        defaultMessage: 'Jenkins Links',
+    },
+    gitLinks: {
+        id: `${scope}.git.links`,
+        defaultMessage: 'Git Links',
+    },
+    jiraLinks: {
+        id: `${scope}.jira.links`,
+        defaultMessage: 'Jira Links',
     },
     chipFailure: {
         id: `${scope}.chip.failure`,
@@ -83,5 +87,41 @@ export default defineMessages({
     totalCard: {
         id: `${scope}.total.card`,
         defaultMessage: 'Total',
+    },
+    missing: {
+        id: `${scope}.missing`,
+        defaultMessage: 'Missing Translation',
+    },
+    // Project
+    ngcc: {
+        id: `${scope}.ngcc`,
+        defaultMessage: 'NGCC',
+    },
+    // Subsystem
+    cosmos: {
+        id: `${scope}.cosmos`,
+        defaultMessage: 'Cosmos',
+    },
+    // Component
+    'kafka-agent': {
+        id: `${scope}.kafka.agent`,
+        defaultMessage: 'Kafka-agent',
+    },
+    // Environment
+    prespace: {
+        id: `${scope}.prespace`,
+        defaultMessage: 'Pre-Space',
+    },
+    postspace: {
+        id: `${scope}.postspace`,
+        defaultMessage: 'Post-Space',
+    },
+    jenkinsDeploy: {
+        id: `${scope}.jenkins.deploy`,
+        defaultMessage: `Deploy console logs`,
+    },
+    weeklyMetrics: {
+        id: `${scope}.weekly.metrics`,
+        defaultMessage: `Weekly Metrics`,
     },
 });

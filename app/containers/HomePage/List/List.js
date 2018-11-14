@@ -2,20 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
+import MaterialList from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Icon from '@material-ui/core/Icon';
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import { FormattedMessage } from 'react-intl';
+import * as R from 'ramda';
 
 import ListItemLink from 'components/ListItemLink';
 import GithubImage from 'images/github.png';
 import JenkinsImage from 'images/jenkins.svg';
 import JiraImage from 'images/jira.png';
 
-import { ICON_SIZE } from './constants';
+import { JIRA_URL, ICON_SIZE } from './constants';
 import messages from '../messages';
 
 const styles = theme => ({
@@ -28,6 +30,40 @@ const styles = theme => ({
     nested: {
         paddingLeft: theme.spacing.unit * 4,
     },
+    list: {
+        paddingBottom: theme.spacing.unit * 2,
+    },
+});
+
+const List = withStyles(styles)(props => {
+    const { classes, icon, subheader, children } = props;
+    if (R.either(R.isNil, R.isEmpty)(children)) return null;
+    return (
+        <MaterialList
+            className={classes.list}
+            component="nav"
+            subheader={
+                <ListSubheader
+                    className={classes.subheader}
+                    component="div"
+                    disableSticky
+                >
+                    <Grid container alignItems="center">
+                        <ListItemIcon>
+                            <img
+                                src={icon}
+                                height={ICON_SIZE}
+                                width={ICON_SIZE}
+                            />
+                        </ListItemIcon>
+                        {subheader}
+                    </Grid>
+                </ListSubheader>
+            }
+        >
+            {children}
+        </MaterialList>
+    );
 });
 
 class NestedList extends React.Component {
@@ -40,70 +76,52 @@ class NestedList extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, build } = this.props;
+        const { commits, tickets, buildUrl, gitRemote } = build;
 
         return (
             <div className={classes.root}>
                 <List
-                    component="nav"
-                    subheader={
-                        <ListSubheader
-                            className={classes.subheader}
-                            component="div"
-                        >
-                            <FormattedMessage {...messages.relatedLinks} />
-                        </ListSubheader>
-                    }
+                    subheader={<FormattedMessage {...messages.gitLinks} />}
+                    icon={GithubImage}
                 >
-                    <Divider />
-                    <ListItemLink>
-                        <ListItemIcon>
-                            <img
-                                src={GithubImage}
-                                height={ICON_SIZE}
-                                width={ICON_SIZE}
-                            />
-                        </ListItemIcon>
-                        <ListItemText
-                            inset
-                            primary={
-                                <FormattedMessage {...messages.githubLink} />
-                            }
-                        />
-                    </ListItemLink>
-                    <Divider />
-                    <ListItemLink>
-                        <ListItemIcon>
-                            <img
-                                src={JenkinsImage}
-                                height={ICON_SIZE}
-                                width={ICON_SIZE}
-                            />
-                        </ListItemIcon>
-                        <ListItemText
-                            inset
-                            primary={
-                                <FormattedMessage {...messages.jenkinsLink} />
-                            }
-                        />
-                    </ListItemLink>
-                    <Divider />
-                    <ListItemLink>
-                        <ListItemIcon>
-                            <img
-                                src={JiraImage}
-                                height={ICON_SIZE}
-                                width={ICON_SIZE}
-                            />
-                        </ListItemIcon>
-                        <ListItemText
-                            inset
-                            primary={
-                                <FormattedMessage {...messages.jiraLink} />
-                            }
-                        />
-                    </ListItemLink>
-                    <Divider />
+                    {commits.map(({ id, author, message, timestamp }) => (
+                        <React.Fragment key={id}>
+                            <Divider />
+                            <ListItemLink href={`${gitRemote}/commit/${id}`}>
+                                <ListItemText
+                                    primary={message}
+                                    secondary={author}
+                                />
+                            </ListItemLink>
+                        </React.Fragment>
+                    ))}
+                </List>
+                <List
+                    subheader={<FormattedMessage {...messages.jiraLinks} />}
+                    icon={JiraImage}
+                >
+                    {tickets.map(ticket => (
+                        <React.Fragment key={ticket}>
+                            <Divider />
+                            <ListItemLink href={`${JIRA_URL}/browse/${ticket}`}>
+                                <ListItemText primary={ticket} />
+                            </ListItemLink>
+                        </React.Fragment>
+                    ))}
+                </List>
+                <List
+                    subheader={<FormattedMessage {...messages.jenkinsLinks} />}
+                    icon={JenkinsImage}
+                >
+                    {[buildUrl].map(build => (
+                        <React.Fragment key={build}>
+                            <Divider />
+                            <ListItemLink href={buildUrl}>
+                                <ListItemText primary="Deploy console logs" />
+                            </ListItemLink>
+                        </React.Fragment>
+                    ))}
                 </List>
             </div>
         );

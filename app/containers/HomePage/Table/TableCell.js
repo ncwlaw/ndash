@@ -79,10 +79,10 @@ const PendingContent = withStyles(styles)(({ classes, children }) => (
 
 const CellContent = compose(
     branch(
-        ({ status }) => status === 'success',
+        ({ status }) => status === 'SUCCESS',
         renderComponent(SuccessContent),
     ),
-    branch(({ status }) => status === 'fail', renderComponent(FailContent)),
+    branch(({ status }) => status === 'FAILURE', renderComponent(FailContent)),
 )(PendingContent);
 
 function TableCellContent(props) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import cn from 'classnames';
 import { compose, withStateHandlers } from 'recompose';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import dateFns from 'date-fns';
 import * as R from 'ramda';
 import messages from '../messages';
@@ -71,10 +71,12 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
     },
     chipContainer: {
-        padding: 20,
+        padding: '5px 0 10px 0',
+        flexShrink: 0,
     },
     componentDetails: {
-        padding: '20px 0',
+        overflow: 'auto',
+        padding: '10px 0',
     },
     cardContent: {
         height: 'calc(100% - 80px)',
@@ -92,8 +94,11 @@ const styles = theme => ({
         top: 0,
         left: 0,
     },
-    growContent: {
+    metrics: {
         minHeight: 450,
+    },
+    build: {
+        minHeight: 500,
     },
 });
 
@@ -121,9 +126,9 @@ const TableCardContent = ({ title, onChange, source, classes }) => (
     </Grid>
 );
 
-const BarChartCardContent = ({ classes }) => (
+const BarChartCardContent = ({ source, classes }) => (
     <div className={classes.cardContent}>
-        <StackedBarChart />
+        <StackedBarChart source={source} />
     </div>
 );
 
@@ -133,16 +138,17 @@ const BuildDetailCardContent = ({ build, classes }) => (
         container
         direction="column"
         justify="space-between"
+        wrap="nowrap"
     >
         <div className={classes.componentDetails}>
-            <ComponentDetails />
+            {R.isEmpty(build) ? null : <ComponentDetails build={build} />}
         </div>
         <Grid
             className={classes.chipContainer}
             container
             justify="space-around"
         >
-            <StatusChip status={build.status} />
+            <StatusChip status={build.buildStatus} />
         </Grid>
     </Grid>
 );
@@ -182,12 +188,15 @@ class TableCard extends React.Component {
             onReset,
             build,
             theme,
+            report,
+            intl,
         } = this.props;
 
         return (
             <Card
                 className={cn(classes.root, {
-                    [classes.growContent]: content !== CONTENT.TABLE,
+                    [classes.build]: content === CONTENT.BUILD,
+                    [classes.metrics]: content === CONTENT.METRICS,
                 })}
             >
                 <TableCardContent
@@ -200,9 +209,12 @@ class TableCard extends React.Component {
                     isVisible={content === CONTENT.METRICS}
                     classes={classes}
                     title={<FormattedMessage {...messages.metrics} />}
+                    subheader={
+                        <FormattedMessage {...messages.successfulMetrics} />
+                    }
                     onClick={onReset}
                 >
-                    <BarChartCardContent classes={classes} />
+                    <BarChartCardContent source={report} classes={classes} />
                 </GrowCardContent>
                 <GrowCardContent
                     isVisible={content === CONTENT.BUILD}
@@ -212,8 +224,8 @@ class TableCard extends React.Component {
                         <FormattedMessage
                             {...messages.buildSubheader}
                             values={{
-                                environment: build.env,
-                                version: build.version,
+                                environment: build.environment,
+                                version: build.buildVersion,
                             }}
                         />
                     }
@@ -250,6 +262,7 @@ const enhance = compose(
         },
     ),
     withCollapse,
+    injectIntl,
     withStyles(styles),
 );
 

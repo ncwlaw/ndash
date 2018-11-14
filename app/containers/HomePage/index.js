@@ -13,24 +13,24 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import messages from './messages';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import red from '@material-ui/core/colors/red';
-import blue from '@material-ui/core/colors/blue';
-import lightGreen from '@material-ui/core/colors/lightGreen';
 import Autocomplete from './Autocomplete';
-import { compose, nest, withProps, withStateHandlers } from 'recompose';
+import { compose, withProps, withStateHandlers } from 'recompose';
 import * as R from 'ramda';
 import { Query } from 'react-apollo';
-import { getEnvironment } from './utils';
-
-import { CardWrapper, MetricCard, TableCard as TCard } from './Card';
-const TableCard = nest(CardWrapper, TCard);
+import Metrics from './Metrics';
+import TableContainer from './TableContainer';
 
 import { GET_SUBSYSTEMS, GET_BUILDS } from './constants';
 
 const HomePage = props => {
-    const { suggestions, source, filters, onFilterChange, intl } = props;
+    const {
+        suggestions,
+        source,
+        filters,
+        onFilterChange,
+        project,
+        intl,
+    } = props;
 
     return (
         <Fragment>
@@ -42,32 +42,14 @@ const HomePage = props => {
                 source={suggestions}
                 emptyMessage={intl.formatMessage(messages.emptyMessage)}
             />
-            <Grid container justify="space-between" spacing={24}>
-                <Grid item xs={12} md={4}>
-                    <MetricCard
-                        color={lightGreen[500]}
-                        title={<FormattedMessage {...messages.successCard} />}
-                        value={1000}
-                    />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <MetricCard
-                        color={red[500]}
-                        title={'Failed'}
-                        title={<FormattedMessage {...messages.failCard} />}
-                        value={1000}
-                    />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <MetricCard
-                        color={blue[500]}
-                        title={<FormattedMessage {...messages.totalCard} />}
-                        value={2000}
-                    />
-                </Grid>
-            </Grid>
-            {Object.entries(source).map(([title, data]) => (
-                <TableCard source={data} key={title} title={title} />
+            <Metrics project={project} />
+            {Object.entries(source).map(([subsystem, data]) => (
+                <TableContainer
+                    key={subsystem}
+                    data={data}
+                    subsystem={subsystem}
+                    project={project}
+                />
             ))}
         </Fragment>
     );
@@ -85,13 +67,25 @@ const enhance = compose(
             }),
         },
     ),
-    withProps(({ filters, subsystems, builds }) => ({
-        suggestions: R.map(({ subsystem: value }) => ({ value, label: value }))(
-            subsystems,
-        ),
-        source: R.reduce((acc, value) => {
-            const { subsystem, component, env } = value;
-            const environment = getEnvironment(env);
+    withProps(({ subsystems, builds, intl }) => ({
+        suggestions: R.compose(
+            R.map(({ subsystem: value }) => ({ value, label: value })),
+            R.map(({ subsystem, ...rest }) => ({
+                ...rest,
+                subsystem: intl.formatMessage(messages[subsystem]),
+            })),
+        )(subsystems),
+        source: R.reduce((acc, oldValue) => {
+            let { subsystem: sub, component: com, environment: env } = oldValue;
+            const subsystem = intl.formatMessage(messages[sub]);
+            const component = intl.formatMessage(messages[com]);
+            const environment = intl.formatMessage(messages[env]);
+            const value = {
+                ...oldValue,
+                environment,
+                subsystem,
+                component,
+            };
             return R.assocPath([subsystem, component, environment], value, acc);
         }, {})(builds),
     })),
@@ -115,6 +109,7 @@ const DataProvider = () => (
                         <EnhancedHomePage
                             builds={builds}
                             subsystems={subsystems}
+                            project="ngcc"
                         />
                     );
                 }}
